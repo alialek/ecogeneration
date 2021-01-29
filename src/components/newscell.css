@@ -1,0 +1,12 @@
+.news-cell .SimpleCell__description {
+  white-space: normal;
+}
+
+.news-cell .SimpleCell {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.news-cell .SimpleCell__main {
+  padding-left: 8px;
+}
