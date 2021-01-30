@@ -24,37 +24,7 @@ class Home extends React.Component {
         this.props.setRating(res.data);
       })
       .catch((err) => {
-        this.props.setRating({
-          user: {
-            first_name: "Mikhail",
-            last_name: "Petrov",
-            id: 1,
-            rating: 2,
-            score: 0,
-            photo_200:
-              "https://sun9-67.userapi.com/impg/OzIScl4zDNeW9klc3epv-LXWYtBcKi2niiBtZA/klF90QXGc5w.jpg?size=50x0&quality=96&crop=222,259,982,982&sign=c0fe2c3e5e87585341ed10ef1bcf65f8&ava=1",
-          },
-          users: [
-            {
-              first_name: "Mikhail",
-              last_name: "Petrov",
-              id: 1,
-              rating: 1,
-              score: 0,
-              photo_200:
-                "https://sun9-67.userapi.com/impg/OzIScl4zDNeW9klc3epv-LXWYtBcKi2niiBtZA/klF90QXGc5w.jpg?size=50x0&quality=96&crop=222,259,982,982&sign=c0fe2c3e5e87585341ed10ef1bcf65f8&ava=1",
-            },
-            {
-              first_name: "Mikhail",
-              last_name: "Petrov",
-              id: 1,
-              rating: 2,
-              score: 0,
-              photo_200:
-                "https://sun9-67.userapi.com/impg/OzIScl4zDNeW9klc3epv-LXWYtBcKi2niiBtZA/klF90QXGc5w.jpg?size=50x0&quality=96&crop=222,259,982,982&sign=c0fe2c3e5e87585341ed10ef1bcf65f8&ava=1",
-            },
-          ],
-        });
+        this.props.setRating("error");
       });
   }
   render() {

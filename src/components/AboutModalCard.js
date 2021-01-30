@@ -17,7 +17,7 @@ import {
   Icon20CancelCircleFillRed,
   Icon20CheckCircleFillGreen,
 } from "@vkontakte/icons";
-import { setSnackbar } from "./../store/data/actions";
+import { setSnackbar, setTasks } from "./../store/data/actions";
 import { getTasks } from "./../api/rest/tasks";
 
 class AboutCard extends Component {
@@ -41,52 +41,7 @@ class AboutCard extends Component {
         this.props.setTasks(res.data);
       })
       .catch((err) => {
-        this.props.setTasks({
-          all: [
-            {
-              id: Math.random(),
-              type: "offline",
-              title: "Покормить голубей",
-              image:
-                "https://icdn.lenta.ru/images/2020/05/31/06/20200531060652313/square_320_fc8f2698d7c92fd3f1bb7b2e28357e47.jpg",
-              description:
-                "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дублик. Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения",
-            },
-            {
-              id: Math.random(),
-              type: "online",
-              title: "Отдать ненужную вещь",
-              image:
-                "https://icdn.lenta.ru/images/2020/05/31/06/20200531060652313/square_320_fc8f2698d7c92fd3f1bb7b2e28357e47.jpg",
-              description:
-                "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дублик. Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения",
-            },
-          ],
-          user: [
-            {
-              comment: "Kek",
-              id: 2,
-              image:
-                "https://icdn.lenta.ru/images/2020/05/31/06/20200531060652313/square_320_fc8f2698d7c92fd3f1bb7b2e28357e47.jpg",
-              status: "decline",
-              title: "Покормить голубей",
-              type: "offline",
-              description:
-                "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дублик. Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения",
-            },
-            {
-              comment: "Kek",
-              id: 2,
-              image:
-                "https://icdn.lenta.ru/images/2020/05/31/06/20200531060652313/square_320_fc8f2698d7c92fd3f1bb7b2e28357e47.jpg",
-              status: "verified",
-              title: "Покормить голубей",
-              type: "offline",
-              description:
-                "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дублик. Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения",
-            },
-          ],
-        });
+        this.props.setTasks("error");
       });
   }
 
@@ -150,6 +105,12 @@ class AboutCard extends Component {
         {task !== null && (
           <div>
             <Text className="description"> {task.description}</Text>
+            {task.status === "decline" && (
+              <Text className="description">
+                {" "}
+                Причина: <span className="comment"> {task.comment}</span>
+              </Text>
+            )}
             {(!task.hasOwnProperty("status") || task.status === "decline") && (
               <FormLayout className="custom-form">
                 <FormLayoutGroup top="Решение">
@@ -178,7 +139,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    ...bindActionCreators({ setSnackbar }, dispatch),
+    ...bindActionCreators({ setSnackbar, setTasks }, dispatch),
   };
 }
 

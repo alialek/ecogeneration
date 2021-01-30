@@ -40,7 +40,8 @@ import {
   Icon28ServicesOutline,
   Icon28UserCircleOutline,
 } from "@vkontakte/icons";
-import { setProfile, setUser } from "./store/data/actions";
+import { setProfile, setUser, setTasks } from "./store/data/actions";
+import { getTasks } from "./api/rest/tasks";
 
 class App extends React.Component {
   popout() {
@@ -59,6 +60,13 @@ class App extends React.Component {
       .then((res) => {
         this.props.setUser(res.data);
         localStorage.setItem("user_ecogen", res.data.token);
+        getTasks()
+          .then((res) => {
+            this.props.setTasks(res.data);
+          })
+          .catch((err) => {
+            this.props.setTasks("error");
+          });
       })
       .catch((err) =>
         this.props.setUser({
@@ -159,7 +167,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    ...bindActionCreators({ setUser, setProfile }, dispatch),
+    ...bindActionCreators({ setUser, setProfile, setTasks }, dispatch),
   };
 }
 

@@ -10,3 +10,7 @@
 .custom-form.FormLayout--ios .FormLayout__row .FormField {
   margin: unset;
 }
+
+.comment {
+  color: red;
+}

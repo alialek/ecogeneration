@@ -22,28 +22,9 @@ class News extends React.Component {
   componentDidMount() {
     getNews()
       .then((res) => {
-        this.props.setNews({});
+        this.props.setNews(res.data);
       })
-      .catch((err) =>
-        this.props.setNews([
-          {
-            link: "https://vk.com/randomcoffee",
-            image:
-              "https://avatars.mds.yandex.net/get-altay/200322/2a0000015b2ea7222b678aa03bc6ab9c3ce1/XXL",
-            title: "Кто проживает на дне океана?",
-            description:
-              "Режиссёр: Степан Бурнашев. В ролях: Федот Львов, Илья Портнягин, Ирина Никифорова, Василий Борисов, Иван Попов, Феодосия Иванова, Дмитрий ",
-          },
-          {
-            link: "https://vk.com/randomcoffee",
-            image:
-              "https://avatars.mds.yandex.net/get-altay/200322/2a0000015b2ea7222b678aa03bc6ab9c3ce1/XXL",
-            title: "Кто проживает на дне океана?",
-            description:
-              "Режиссёр: Степан Бурнашев. В ролях: Федот Львов, Илья Портнягин, Ирина Никифорова, Василий Борисов, Иван Попов, Феодосия Иванова, Дмитрий ",
-          },
-        ]),
-      );
+      .catch((err) => this.props.setNews("error"));
   }
   render() {
     const { id, router, news, user } = this.props;
