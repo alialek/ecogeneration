@@ -9,6 +9,7 @@ import {
   Title,
   Div,
   PanelHeaderButton,
+  FormStatus,
 } from "@vkontakte/vkui";
 import { withRouter } from "@happysanta/router";
 import pensive from "../img/pensive.png";
@@ -51,6 +52,10 @@ class Home extends React.Component {
               <Title level="2" weight="medium">
                 Твоя позиция
               </Title>
+              <FormStatus header="Хочешь больше баллов?" mode="default">
+                Делись записью на стене через приложение и получай 0.5 балла за
+                приглашенного друга
+              </FormStatus>
               <RatingCell user={rating.user} />
             </Div>
             <Div>

@@ -55,8 +55,8 @@ class App extends React.Component {
     getUserInfo().then((res) => {
       this.props.setProfile(res);
     });
-    // router.replacePage(PAGE_PROFILE);
-    auth(window.location.search)
+
+    auth(window.location.search, localStorage.getItem("referrer").slice(1))
       .then((res) => {
         this.props.setUser(res.data);
         localStorage.setItem("user_ecogen", res.data.token);

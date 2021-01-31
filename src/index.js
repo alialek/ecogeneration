@@ -10,7 +10,6 @@ import { RouterContext } from "@happysanta/router";
 import { router } from "./router/index.js";
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
-
 initApp();
 
 ReactDOM.render(

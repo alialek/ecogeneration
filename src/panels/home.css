@@ -10,3 +10,15 @@
   margin-top: 8px;
   margin-bottom: 8px;
 }
+.SimpleCell .Avatar__shadow {
+  box-shadow: none !important;
+}
+
+.SimpleCell .Avatar__img {
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+.profile__invite {
+  margin: 8px 0;
+}

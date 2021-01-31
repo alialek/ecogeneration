@@ -27,6 +27,21 @@ export const tapticSelectNotification = () => {
   api.bridge.send("VKWebAppTapticSelectionChanged", {});
 };
 
+export const shareWallPost = (id) => {
+  api.bridge.send("VKWebAppShowWallPostBox", {
+    message:
+      "Спасай планету вместе с нами, соревнуйся с другими участниками и получай призы! \n \n Вступай в Экопоколение.",
+    attachments: `https://vk.com/app7744255#${id}`,
+  });
+};
+
+export const showImages = (images, start_index) => {
+  api.bridge.send("VKWebAppShowImages", {
+    images,
+    start_index,
+  });
+};
+
 // export const isIntroViewed = async () => {
 //     return await api.storageGet(STORAGE_KEYS.STATUS);
 // };

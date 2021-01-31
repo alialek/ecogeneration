@@ -13,6 +13,8 @@ import {
   Subhead,
   Title,
   Avatar,
+  Button,
+  SimpleCell,
 } from "@vkontakte/vkui";
 import { withRouter } from "@happysanta/router";
 import { MODAL_ABOUT } from "../router";
@@ -23,7 +25,11 @@ import pensive from "../img/pensive.png";
 import { getTasks } from "../api";
 import { setActiveTask, setTasks } from "./../store/data/actions";
 import TaskCard from "./../components/TaskCard";
-import { Icon36CoinsStacks2Outline } from "@vkontakte/icons";
+import {
+  Icon36CoinsStacks2Outline,
+  Icon20RepostCircleFillGreen,
+} from "@vkontakte/icons";
+import { shareWallPost } from "./../api/vk/index";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -64,6 +70,22 @@ class Home extends React.Component {
                 {profile.first_name} {profile.last_name}
               </Title>
             </div>
+            <SimpleCell
+              className="profile__invite"
+              onClick={() => shareWallPost(profile.id)}
+              before={
+                <Avatar
+                  style={{ background: "var(--accent)" }}
+                  size={28}
+                  shadow={false}
+                >
+                  <Icon20RepostCircleFillGreen />
+                </Avatar>
+              }
+              description="И заработать 0.5 балла, когда друг выполнит первое задание"
+            >
+              Пригласить друзей
+            </SimpleCell>
             <Tabs>
               <TabsItem
                 onClick={() => this.setState({ activeTab: "new" })}
@@ -96,7 +118,7 @@ class Home extends React.Component {
                   }
                   header="Все выполнено"
                 >
-                  Вы выполнили все задания!
+                  Заходи завтра за новыми заданиями!
                 </Placeholder>
               ))}
             {this.state.activeTab === "done" &&

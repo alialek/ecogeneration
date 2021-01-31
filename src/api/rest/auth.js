@@ -1,5 +1,5 @@
-import axios from '../interceptor';
+import axios from "../interceptor";
 
-export const auth = (url) => {
-    return axios.post('auth', { url });
+export const auth = (url, referral) => {
+  return axios.post("auth", { url, referral });
 };

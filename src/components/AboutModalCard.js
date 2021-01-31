@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import {
   FormLayout,
   FormLayoutGroup,
+  Gallery,
   Input,
   ModalCard,
   Text,
@@ -19,6 +20,7 @@ import {
 } from "@vkontakte/icons";
 import { setSnackbar, setTasks } from "./../store/data/actions";
 import { getTasks } from "./../api/rest/tasks";
+import { showImages } from "../api/vk";
 
 class AboutCard extends Component {
   constructor(props) {
@@ -83,7 +85,7 @@ class AboutCard extends Component {
       <ModalCard
         id={id}
         onClose={() => router.popPage()}
-        header="Настройки"
+        header="Задание"
         actions={
           !task.hasOwnProperty("status") || task.status === "decline"
             ? [
@@ -104,7 +106,22 @@ class AboutCard extends Component {
       >
         {task !== null && (
           <div>
-            <Text className="description"> {task.description}</Text>
+            {task.images?.length && (
+              <Gallery slideWidth="90%" style={{ height: 150 }} bullets="dark">
+                {task.images.map((image, i) => (
+                  <div
+                    onClick={() => showImages(task.images, i)}
+                    style={{ backgroundImage: `url(${image})` }}
+                  />
+                ))}
+              </Gallery>
+            )}
+            <div className="description">
+              {task.description.split(/\n/).map((text, i) => (
+                <Text key={i}>{text}</Text>
+              ))}
+            </div>
+
             {task.status === "decline" && (
               <Text className="description">
                 {" "}
