@@ -13,10 +13,11 @@ import {
 } from "@vkontakte/vkui";
 import { withRouter } from "@happysanta/router";
 import pensive from "../img/pensive.png";
-import { Icon36CoinsStacks2Outline } from "@vkontakte/icons";
+import { Icon28InfoCircleOutline } from "@vkontakte/icons";
 import { getRating } from "./../api/rest/rating";
 import { setRating } from "../store/data/actions";
 import RatingCell from "../components/RatingCell";
+import { MODAL_INFO } from "../router";
 
 class Home extends React.Component {
   componentDidMount() {
@@ -29,18 +30,15 @@ class Home extends React.Component {
       });
   }
   render() {
-    const { id, router, rating, user } = this.props;
+    const { id, router, rating } = this.props;
 
     return (
       <Panel id={id}>
         <PanelHeader
           separator={false}
           left={
-            <PanelHeaderButton>
-              <Icon36CoinsStacks2Outline />{" "}
-              <Title level="2" className="point-counter" weight="bold">
-                {user?.score}
-              </Title>
+            <PanelHeaderButton onClick={() => router.pushModal(MODAL_INFO)}>
+              <Icon28InfoCircleOutline />
             </PanelHeaderButton>
           }
         >

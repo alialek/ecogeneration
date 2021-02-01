@@ -17,21 +17,20 @@ import "@vkontakte/vkui/dist/vkui.css";
 
 import Profile from "./views/ProfileView";
 import {
-  router,
   VIEW_PROFILE,
   VIEW_NEWS,
   VIEW_RATING,
   MODAL_ABOUT,
-  POPOUT_CONFIRM,
   POPOUT_SPINNER,
   PAGE_RATING,
   PAGE_NEWS,
+  MODAL_INFO,
 } from "./router";
 import { PAGE_PROFILE } from "./router/index";
 import "./App.css";
 import { auth } from "./api";
 import { withRouter } from "@happysanta/router";
-import { getUserInfo } from "./api/vk/index";
+import { getUserInfo, isIntroViewed } from "./api/vk/index";
 import AboutModalCard from "./components/AboutModalCard";
 import News from "./views/NewsView";
 import Rating from "./views/RatingView";
@@ -40,8 +39,15 @@ import {
   Icon28ServicesOutline,
   Icon28UserCircleOutline,
 } from "@vkontakte/icons";
-import { setProfile, setUser, setTasks } from "./store/data/actions";
+import {
+  setProfile,
+  setUser,
+  setTasks,
+  setIsOnboardingViewed,
+} from "./store/data/actions";
 import { getTasks } from "./api/rest/tasks";
+import IntroView from "./views/IntroView";
+import DelayInfoModalCard from "./components/DelayInfoModalCard";
 
 class App extends React.Component {
   popout() {
@@ -52,6 +58,10 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
+    isIntroViewed().then((res) => {
+      return this.props.setIsOnboardingViewed(res.length !== 0 ? true : false);
+    });
+
     getUserInfo().then((res) => {
       this.props.setProfile(res);
     });
@@ -88,11 +98,13 @@ class App extends React.Component {
         activeModal={location.getModalId()}
       >
         <AboutModalCard id={MODAL_ABOUT} />
+        <DelayInfoModalCard id={MODAL_INFO} />
       </ModalRoot>
     );
     return (
       <ConfigProvider isWebView={true} scheme={colorScheme}>
-        <Root activeView="main">
+        <Root activeView={this.props.isOnboardingViewed ? "main" : "intro"}>
+          <IntroView id="intro" activePanel="intro-1" />
           <View id="main" activePanel="main-1">
             <Panel id="main-1">
               <Epic
@@ -161,13 +173,17 @@ const mapStateToProps = (state) => {
   return {
     snackbar: state.data.snackbar,
     colorScheme: state.data.colorScheme,
+    isOnboardingViewed: state.data.isOnboardingViewed,
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    ...bindActionCreators({ setUser, setProfile, setTasks }, dispatch),
+    ...bindActionCreators(
+      { setUser, setProfile, setTasks, setIsOnboardingViewed },
+      dispatch,
+    ),
   };
 }
 

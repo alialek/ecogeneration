@@ -7,6 +7,7 @@ import {
   SET_ACTIVE_TASK,
   SET_SNACKBAR,
   SET_PROFILE,
+  SET_IS_ONBOARDING_VIEWED,
 } from "./actionTypes";
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   profile: null,
   activeTask: null,
   snackbar: null,
+  isOnboardingViewed: true,
   taskStates: {
     verified: "Выполнено",
     unverified: "Проверяется",
@@ -37,6 +39,12 @@ export const dataReducer = (state = initialState, action) => {
       return {
         ...state,
         snackbar: action.payload.data,
+      };
+    }
+    case SET_IS_ONBOARDING_VIEWED: {
+      return {
+        ...state,
+        isOnboardingViewed: action.payload.data,
       };
     }
     case SET_NEWS: {

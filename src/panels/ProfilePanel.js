@@ -4,16 +4,13 @@ import { bindActionCreators } from "redux";
 import {
   Panel,
   PanelHeader,
-  PanelHeaderButton,
   Placeholder,
   PanelSpinner,
   Tabs,
   TabsItem,
   Div,
-  Subhead,
   Title,
   Avatar,
-  Button,
   SimpleCell,
 } from "@vkontakte/vkui";
 import { withRouter } from "@happysanta/router";
@@ -22,7 +19,6 @@ import "./home.css";
 import monocle from "../img/monocle.png";
 import party from "../img/party.png";
 import pensive from "../img/pensive.png";
-import { getTasks } from "../api";
 import { setActiveTask, setTasks } from "./../store/data/actions";
 import TaskCard from "./../components/TaskCard";
 import {
@@ -45,19 +41,19 @@ class Home extends React.Component {
   }
 
   render() {
-    const { id, router, tasks, user, profile } = this.props;
+    const { id, tasks, user, profile } = this.props;
 
     return (
       <Panel id={id}>
         <PanelHeader
           separator={false}
           left={
-            <PanelHeaderButton>
-              <Icon36CoinsStacks2Outline />{" "}
-              <Title level="2" className="point-counter" weight="bold">
+            <div className="d-row align-center">
+              <Icon36CoinsStacks2Outline width={26} />
+              <Title level="3" className="point-counter" weight="medium">
                 {user?.score}
               </Title>
-            </PanelHeaderButton>
+            </div>
           }
         >
           Профиль
@@ -118,7 +114,7 @@ class Home extends React.Component {
                   }
                   header="Все выполнено"
                 >
-                  Заходи завтра за новыми заданиями!
+                  Скоро появятся новые задания!
                 </Placeholder>
               ))}
             {this.state.activeTab === "done" &&

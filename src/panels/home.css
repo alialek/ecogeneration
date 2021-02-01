@@ -22,3 +22,7 @@
 .profile__invite {
   margin: 8px 0;
 }
+
+.profile__invite .SimpleCell__description {
+  white-space: normal;
+}

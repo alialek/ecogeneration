@@ -13,10 +13,11 @@ import {
 import { withRouter } from "@happysanta/router";
 import "./home.css";
 import pensive from "../img/pensive.png";
-import { Icon36CoinsStacks2Outline } from "@vkontakte/icons";
+import { Icon28InfoCircleOutline } from "@vkontakte/icons";
 import { setNews } from "./../store/data/actions";
 import { getNews } from "./../api/rest/news";
 import NewsCell from "../components/NewsCell";
+import { MODAL_INFO } from "../router";
 
 class News extends React.Component {
   componentDidMount() {
@@ -34,11 +35,8 @@ class News extends React.Component {
         <PanelHeader
           separator={false}
           left={
-            <PanelHeaderButton>
-              <Icon36CoinsStacks2Outline />{" "}
-              <Title level="2" className="point-counter" weight="bold">
-                {user?.score}
-              </Title>
+            <PanelHeaderButton onClick={() => router.pushModal(MODAL_INFO)}>
+              <Icon28InfoCircleOutline />{" "}
             </PanelHeaderButton>
           }
         >

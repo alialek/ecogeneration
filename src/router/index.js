@@ -13,6 +13,7 @@ export const VIEW_RATING = "view_rating";
 export const VIEW_NEWS = "view_news";
 
 export const MODAL_ABOUT = "modal_about";
+export const MODAL_INFO = "modal_INFO";
 
 export const POPOUT_CONFIRM = "popout_confirm";
 export const POPOUT_SPINNER = "popout_spinner";

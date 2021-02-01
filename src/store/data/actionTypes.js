@@ -6,3 +6,4 @@ export const SET_RATING = "SET_RATING";
 export const SET_ACTIVE_TASK = "SET_ACTIVE_TASK";
 export const SET_SNACKBAR = "SET_SNACKBAR";
 export const SET_PROFILE = "SET_PROFILE";
+export const SET_IS_ONBOARDING_VIEWED = "SET_IS_ONBOARDING_VIEWED";

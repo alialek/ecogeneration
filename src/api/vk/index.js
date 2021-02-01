@@ -1,8 +1,9 @@
 import { VKMiniAppAPI } from "@vkontakte/vk-mini-apps-api";
 import { store } from "../../index";
-import { setColorScheme } from "../../store/data/actions";
-import { router, PAGE_PROFILE } from "../../router";
-
+import {
+  setColorScheme,
+  setIsOnboardingViewed,
+} from "../../store/data/actions";
 const api = new VKMiniAppAPI();
 
 const STORAGE_KEYS = {
@@ -30,7 +31,7 @@ export const tapticSelectNotification = () => {
 export const shareWallPost = (id) => {
   api.bridge.send("VKWebAppShowWallPostBox", {
     message:
-      "Спасай планету вместе с нами, соревнуйся с другими участниками и получай призы! \n \n Вступай в Экопоколение.",
+      "Спасай планету вместе с нами, соревнуйся с другими участниками и получай призы! \n \n Вступай в Экопоколение. \n Проект @ecodelai(Делай!) и @rosmolodez(Росмолодежь)",
     attachments: `https://vk.com/app7744255#${id}`,
   });
 };
@@ -42,9 +43,9 @@ export const showImages = (images, start_index) => {
   });
 };
 
-// export const isIntroViewed = async () => {
-//     return await api.storageGet(STORAGE_KEYS.STATUS);
-// };
-// export const setIntroViewed = async () => {
-//     api.storageSet(STORAGE_KEYS.STATUS, 'viewed').finally(() => router.replacePage(PAGE_PROFILE));
-// };
+export const isIntroViewed = async () => {
+  return await api.storageGet(STORAGE_KEYS.STATUS);
+};
+export const setIntroViewed = async () => {
+  api.storageSet(STORAGE_KEYS.STATUS, "viewed");
+};
