@@ -24,8 +24,9 @@ import TaskCard from "./../components/TaskCard";
 import {
   Icon36CoinsStacks2Outline,
   Icon20RepostCircleFillGreen,
+  Icon28NotificationCircleFillGray,
 } from "@vkontakte/icons";
-import { shareWallPost } from "./../api/vk/index";
+import { shareWallPost, enableNotifications } from "./../api/vk/index";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +42,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { id, tasks, user, profile } = this.props;
+    const { id, tasks, user, profile, isNotificationsEnabled } = this.props;
 
     return (
       <Panel id={id}>
@@ -82,6 +83,26 @@ class Home extends React.Component {
             >
               Пригласить друзей
             </SimpleCell>
+            {isNotificationsEnabled}
+            {!isNotificationsEnabled && (
+              <SimpleCell
+                className="profile__invite"
+                onClick={() => enableNotifications()}
+                before={
+                  <Avatar
+                    style={{ background: "var(--accent)" }}
+                    size={28}
+                    shadow={false}
+                  >
+                    <Icon28NotificationCircleFillGray />
+                  </Avatar>
+                }
+                description="Чтобы не пропустить новые задания"
+              >
+                Включить уведомления
+              </SimpleCell>
+            )}
+
             <Tabs>
               <TabsItem
                 onClick={() => this.setState({ activeTab: "new" })}
@@ -161,6 +182,7 @@ const mapStateToProps = (state) => {
     tasks: state.data.tasks,
     user: state.data.user,
     profile: state.data.profile,
+    isNotificationsEnabled: state.data.isNotificationsEnabled,
   };
 };
 

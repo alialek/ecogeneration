@@ -42,6 +42,9 @@ export const showImages = (images, start_index) => {
     start_index,
   });
 };
+export const enableNotifications = () => {
+  api.bridge.send("VKWebAppAllowNotifications");
+};
 
 export const isIntroViewed = async () => {
   return await api.storageGet(STORAGE_KEYS.STATUS);

@@ -1,6 +1,7 @@
 import {
   SET_ACTIVE_TASK,
   SET_COLOR_SCHEME,
+  SET_IS_NOTIFICATIONS_ENABLED,
   SET_IS_ONBOARDING_VIEWED,
   SET_NEWS,
   SET_PROFILE,
@@ -60,6 +61,12 @@ export const setSnackbar = (inputData) => ({
 });
 export const setIsOnboardingViewed = (inputData) => ({
   type: SET_IS_ONBOARDING_VIEWED,
+  payload: {
+    data: inputData,
+  },
+});
+export const setIsNotificationsEnabled = (inputData) => ({
+  type: SET_IS_NOTIFICATIONS_ENABLED,
   payload: {
     data: inputData,
   },

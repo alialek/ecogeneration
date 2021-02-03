@@ -8,6 +8,7 @@ import {
   SET_SNACKBAR,
   SET_PROFILE,
   SET_IS_ONBOARDING_VIEWED,
+  SET_IS_NOTIFICATIONS_ENABLED,
 } from "./actionTypes";
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   activeTask: null,
   snackbar: null,
   isOnboardingViewed: true,
+  isNotificationsEnabled: false,
   taskStates: {
     verified: "Выполнено",
     unverified: "Проверяется",
@@ -45,6 +47,12 @@ export const dataReducer = (state = initialState, action) => {
       return {
         ...state,
         isOnboardingViewed: action.payload.data,
+      };
+    }
+    case SET_IS_NOTIFICATIONS_ENABLED: {
+      return {
+        ...state,
+        isNotificationsEnabled: action.payload.data,
       };
     }
     case SET_NEWS: {

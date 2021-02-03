@@ -44,6 +44,7 @@ import {
   setUser,
   setTasks,
   setIsOnboardingViewed,
+  setIsNotificationsEnabled,
 } from "./store/data/actions";
 import { getTasks } from "./api/rest/tasks";
 import IntroView from "./views/IntroView";
@@ -66,27 +67,29 @@ class App extends React.Component {
       this.props.setProfile(res);
     });
 
-    auth(window.location.search, localStorage.getItem("referrer").slice(1))
-      .then((res) => {
-        this.props.setUser(res.data);
-        localStorage.setItem("user_ecogen", res.data.token);
-        getTasks()
-          .then((res) => {
-            this.props.setTasks(res.data);
-          })
-          .catch((err) => {
-            this.props.setTasks("error");
-          });
-      })
-      .catch((err) =>
-        this.props.setUser({
-          id: 1,
-          new: false,
-          reg_time: 23423,
-          score: 0,
-          token: "sdiwe",
-        }),
-      );
+    auth(
+      window.location.search,
+      localStorage.getItem("referrer").slice(1),
+    ).then((res) => {
+      this.props.setUser(res.data);
+      localStorage.setItem("user_ecogen", res.data.token);
+
+      getTasks()
+        .then((res) => {
+          this.props.setTasks(res.data);
+        })
+        .catch((err) => {
+          this.props.setTasks("error");
+        });
+    });
+
+    this.props.setIsNotificationsEnabled(
+      Boolean(
+        +window.location.search
+          .split("vk_are_notifications_enabled=")[1]
+          .slice(0, 1),
+      ),
+    );
   }
 
   render() {
@@ -181,7 +184,13 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     ...bindActionCreators(
-      { setUser, setProfile, setTasks, setIsOnboardingViewed },
+      {
+        setUser,
+        setProfile,
+        setTasks,
+        setIsOnboardingViewed,
+        setIsNotificationsEnabled,
+      },
       dispatch,
     ),
   };
