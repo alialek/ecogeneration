@@ -9,7 +9,7 @@ const taskStates = {
 };
 
 function getAmount(type) {
-  return type === "offline" ? "+3" : "+5";
+  return type === "offline" ? "+10" : "+5";
 }
 function getDoneIcon(status, type) {
   switch (status) {
@@ -30,7 +30,7 @@ export default function TaskCard({ task, type }) {
         type === "done"
           ? getDoneIcon(task.status, task.type)
           : type === "new"
-          ? getAmount(type)
+          ? getAmount(task.type)
           : ""
       }
       description={type === "done" ? taskStates[task.status] : task.description}

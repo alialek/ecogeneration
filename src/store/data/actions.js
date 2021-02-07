@@ -9,6 +9,7 @@ import {
   SET_SNACKBAR,
   SET_TASKS,
   SET_USER,
+  SET_TEST,
 } from "./actionTypes.js";
 
 export const setColorScheme = (inputData) => ({
@@ -31,6 +32,12 @@ export const setNews = (inputData) => ({
 });
 export const setRating = (inputData) => ({
   type: SET_RATING,
+  payload: {
+    data: inputData,
+  },
+});
+export const setTest = (inputData) => ({
+  type: SET_TEST,
   payload: {
     data: inputData,
   },

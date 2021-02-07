@@ -9,6 +9,7 @@ import {
   SET_PROFILE,
   SET_IS_ONBOARDING_VIEWED,
   SET_IS_NOTIFICATIONS_ENABLED,
+  SET_TEST,
 } from "./actionTypes";
 
 const initialState = {
@@ -22,6 +23,13 @@ const initialState = {
   snackbar: null,
   isOnboardingViewed: true,
   isNotificationsEnabled: false,
+  test: [
+    {
+      id: 1,
+      question: "Сколько автору лет лет?",
+      answers: [3, 4, 5, 6],
+    },
+  ],
   taskStates: {
     verified: "Выполнено",
     unverified: "Проверяется",
@@ -41,6 +49,12 @@ export const dataReducer = (state = initialState, action) => {
       return {
         ...state,
         snackbar: action.payload.data,
+      };
+    }
+    case SET_TEST: {
+      return {
+        ...state,
+        test: action.payload.data,
       };
     }
     case SET_IS_ONBOARDING_VIEWED: {

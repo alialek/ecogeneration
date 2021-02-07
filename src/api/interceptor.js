@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: "https://ecogeneration.online/api",
-  timeout: 9000,
+  timeout: 89000,
   headers: {
     "Content-Type": "application/json",
   },

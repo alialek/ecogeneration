@@ -1,32 +1,33 @@
+import { withRouter } from "@happysanta/router";
+import {
+  Icon20RepostCircleFillGreen,
+  Icon28NotificationCircleFillGray,
+  Icon36CoinsStacks2Outline,
+} from "@vkontakte/icons";
+import {
+  Avatar,
+  Counter,
+  Div,
+  Panel,
+  PanelHeader,
+  PanelSpinner,
+  Placeholder,
+  SimpleCell,
+  Tabs,
+  TabsItem,
+  Title,
+} from "@vkontakte/vkui";
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {
-  Panel,
-  PanelHeader,
-  Placeholder,
-  PanelSpinner,
-  Tabs,
-  TabsItem,
-  Div,
-  Title,
-  Avatar,
-  SimpleCell,
-} from "@vkontakte/vkui";
-import { withRouter } from "@happysanta/router";
-import { MODAL_ABOUT } from "../router";
-import "./home.css";
 import monocle from "../img/monocle.png";
 import party from "../img/party.png";
 import pensive from "../img/pensive.png";
-import { setActiveTask, setTasks } from "./../store/data/actions";
+import { MODAL_ABOUT, MODAL_TEST } from "../router";
+import { enableNotifications, shareWallPost } from "./../api/vk/index";
 import TaskCard from "./../components/TaskCard";
-import {
-  Icon36CoinsStacks2Outline,
-  Icon20RepostCircleFillGreen,
-  Icon28NotificationCircleFillGray,
-} from "@vkontakte/icons";
-import { shareWallPost, enableNotifications } from "./../api/vk/index";
+import { setActiveTask, setTasks } from "./../store/data/actions";
+import "./home.css";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -36,9 +37,16 @@ class Home extends React.Component {
     };
   }
 
-  openModal(task) {
+  getAmountOfDeclined() {
+    return this.props.tasks.user.reduce(
+      (acc, val) => (val.status === "decline" ? acc + 1 : acc),
+      0,
+    );
+  }
+
+  openModal(task, page) {
     this.props.setActiveTask(task);
-    this.props.router.pushModal(MODAL_ABOUT);
+    this.props.router.pushModal(MODAL_TEST);
   }
 
   render() {
@@ -62,8 +70,8 @@ class Home extends React.Component {
         {tasks !== null && tasks !== "error" && profile !== null && (
           <div>
             <div className="d-col align-center profile">
-              <Avatar size="100px" src={profile.photo_200}></Avatar>
-              <Title className="profile__name" level="2" weight="bold">
+              <Avatar size="80px" src={profile.photo_200}></Avatar>
+              <Title className="profile__name" level="3" weight="bold">
                 {profile.first_name} {profile.last_name}
               </Title>
             </div>
@@ -114,13 +122,25 @@ class Home extends React.Component {
                 onClick={() => this.setState({ activeTab: "done" })}
                 selected={this.state.activeTab === "done"}
               >
-                Завершенные
+                Завершенные{" "}
+                {this.getAmountOfDeclined() > 0 && (
+                  <Counter className="declined-indicator">
+                    {this.getAmountOfDeclined()}
+                  </Counter>
+                )}
               </TabsItem>
             </Tabs>
             {this.state.activeTab === "new" &&
               (tasks.all.length ? (
                 tasks.all.map((task, i) => (
-                  <Div key={i} onClick={() => this.openModal(task)}>
+                  <Div
+                    key={i}
+                    onClick={
+                      task.type === "test"
+                        ? () => this.openModal(task, MODAL_TEST)
+                        : () => this.openModal(task, MODAL_ABOUT)
+                    }
+                  >
                     <TaskCard task={task} type={this.state.activeTab} />
                   </Div>
                 ))

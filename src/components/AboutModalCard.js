@@ -1,15 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter } from "@happysanta/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
+  ANDROID,
+  Button,
+  Div,
   FormLayout,
   FormLayoutGroup,
   Gallery,
   Input,
-  ModalCard,
+  IOS,
+  ModalPage,
+  ModalPageHeader,
+  PanelHeaderButton,
+  platform,
   Text,
-  Textarea,
 } from "@vkontakte/vkui";
 import "./card.css";
 import { postTask } from "./../api/rest/task";
@@ -17,11 +23,13 @@ import showSnackbar from "./../helpers/generateSnackbar";
 import {
   Icon20CancelCircleFillRed,
   Icon20CheckCircleFillGreen,
+  Icon24Cancel,
 } from "@vkontakte/icons";
 import { setSnackbar, setTasks } from "./../store/data/actions";
 import { getTasks } from "./../api/rest/tasks";
 import { showImages } from "../api/vk";
 import FileUploader from "./fileUploader";
+import { POPOUT_SPINNER } from "./../router/index";
 
 class AboutCard extends Component {
   constructor(props) {
@@ -55,12 +63,13 @@ class AboutCard extends Component {
   }
 
   sendAnswer(type) {
+    this.props.router.replacePopup(POPOUT_SPINNER);
     if (this.state.link || this.state.images) {
       let data = { id: this.props.task.id };
       type === "link"
         ? (data = { ...data, link: this.state.link })
-        : type === "image"
-        ? (data = { ...data, image: this.state.images[0] })
+        : type === "photo"
+        ? (data = { ...data, photo: this.state.images[0] })
         : (data = { ...data, answers: this.state.answers });
       return postTask(data)
         .then((res) => {
@@ -81,6 +90,9 @@ class AboutCard extends Component {
               () => this.setState({ snackbar: null }),
             ),
           });
+        })
+        .finally(() => {
+          this.props.router.replacePopup(null);
         });
     }
 
@@ -96,36 +108,47 @@ class AboutCard extends Component {
   render() {
     const { task, id, router } = this.props;
     return (
-      <ModalCard
+      <ModalPage
         id={id}
         onClose={() => router.popPage()}
-        header="Задание"
-        actions={
-          !task.hasOwnProperty("status") || task.status === "decline"
-            ? [
-                {
-                  title: "Отправить",
-                  mode: "primary",
-                  action: () => this.sendAnswer(task.typeTask),
-                },
-              ]
-            : [
-                {
-                  title: "Закрыть",
-                  mode: "primary",
-                  action: () => router.popPage(),
-                },
-              ]
+        header={
+          <ModalPageHeader
+            left={
+              <Fragment>
+                {platform === ANDROID && (
+                  <PanelHeaderButton onClick={() => router.popPage()}>
+                    <Icon24Cancel />
+                  </PanelHeaderButton>
+                )}
+              </Fragment>
+            }
+            right={
+              <Fragment>
+                {platform === IOS && (
+                  <PanelHeaderButton onClick={() => router.popPage()}>
+                    Закрыть
+                  </PanelHeaderButton>
+                )}
+              </Fragment>
+            }
+          >
+            Задание
+          </ModalPageHeader>
         }
       >
         {task !== null && (
-          <div>
+          <Div>
             {task.images?.length && (
-              <Gallery slideWidth="90%" style={{ height: 150 }} bullets="dark">
+              <Gallery slideWidth="100%" style={{ height: 150 }} bullets="dark">
                 {task.images.map((image, i) => (
                   <div
                     onClick={() => showImages(task.images, i)}
-                    style={{ backgroundImage: `url(${image})` }}
+                    style={{
+                      backgroundImage: `url(${image})`,
+                      backgroundSize: "contain",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
                   />
                 ))}
               </Gallery>
@@ -135,7 +158,6 @@ class AboutCard extends Component {
                 <Text key={i}>{text}</Text>
               ))}
             </div>
-
             {task.status === "decline" && (
               <Text className="description">
                 {" "}
@@ -152,7 +174,7 @@ class AboutCard extends Component {
                       placeholder="Ссылка на пост"
                     />
                   )}
-                  {task?.typeTask === "image" && (
+                  {task?.typeTask === "photo" && (
                     <FileUploader
                       withIcon={true}
                       buttonText="Загрузить изображения"
@@ -166,10 +188,27 @@ class AboutCard extends Component {
                 </FormLayoutGroup>
               </FormLayout>
             )}
-          </div>
+            {!task.hasOwnProperty("status") || task.status === "decline" ? (
+              <Button
+                size="xl"
+                onClick={() => this.sendAnswer(task.typeTask)}
+                mode="primary"
+              >
+                Отправить
+              </Button>
+            ) : task.type === "test" ? (
+              <Button size="xl" onClick={this.openTest} mode="primary">
+                Решить тест
+              </Button>
+            ) : (
+              <Button size="xl" onClick={() => router.popPage()} mode="primary">
+                Закрыть
+              </Button>
+            )}
+          </Div>
         )}
         {this.state.snackbar}
-      </ModalCard>
+      </ModalPage>
     );
   }
 }

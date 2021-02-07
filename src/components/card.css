@@ -14,3 +14,21 @@
 .comment {
   color: red;
 }
+
+.question {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+.test-start-button {
+  margin-top: 16px;
+}
+
+.answerCard {
+  border-radius: 6px;
+  border: 1px solid rgb(83, 83, 83);
+  margin: 8px 0;
+}
+
+.answerCard--IsChosen {
+  border: 1px solid rgb(101, 223, 64) !important;
+}

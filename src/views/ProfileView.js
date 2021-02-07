@@ -13,7 +13,7 @@ class Profile extends Component {
         modal={this.props.modal}
         activePanel={this.props.activePanel}
       >
-        <ProfilePanel id={PANEL_PROFILE} />
+        <ProfilePanel popout={this.props.popout} id={PANEL_PROFILE} />
       </View>
     );
   }

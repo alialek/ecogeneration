@@ -25,6 +25,7 @@ import {
   PAGE_RATING,
   PAGE_NEWS,
   MODAL_INFO,
+  MODAL_TEST,
 } from "./router";
 import { PAGE_PROFILE } from "./router/index";
 import "./App.css";
@@ -49,6 +50,7 @@ import {
 import { getTasks } from "./api/rest/tasks";
 import IntroView from "./views/IntroView";
 import DelayInfoModalCard from "./components/DelayInfoModalCard";
+import TestModalPage from "./components/TestModalPage";
 
 class App extends React.Component {
   popout() {
@@ -100,6 +102,7 @@ class App extends React.Component {
         onClose={() => router.popPage()}
         activeModal={location.getModalId()}
       >
+        <TestModalPage id={MODAL_TEST} />
         <AboutModalCard id={MODAL_ABOUT} />
         <DelayInfoModalCard id={MODAL_INFO} />
       </ModalRoot>

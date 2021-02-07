@@ -26,3 +26,27 @@
 .profile__invite .SimpleCell__description {
   white-space: normal;
 }
+
+.declined-indicator {
+  display: inline-block;
+  background: var(--button_secondary_destructive_foreground) !important;
+}
+
+.prize {
+  position: relative;
+  background-color: white;
+}
+
+.prize__photo {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80%;
+}
+
+.prize__description {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  color: black;
+}
