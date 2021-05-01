@@ -9,10 +9,12 @@ import {
   Title,
   Div,
   PanelHeaderButton,
-  FormStatus,
   Gallery,
   Text,
   Caption,
+  Tabs,
+  TabsItem,
+  Separator,
 } from "@vkontakte/vkui";
 import { withRouter } from "@happysanta/router";
 import pensive from "../img/pensive.png";
@@ -20,14 +22,29 @@ import { Icon28InfoCircleOutline } from "@vkontakte/icons";
 import { getRating } from "./../api/rest/rating";
 import { setRating } from "../store/data/actions";
 import RatingCell from "../components/RatingCell";
-import { MODAL_INFO } from "../router";
-import cup from "../img/cup.jpg";
+import { MODAL_INFO, MODAL_VIEW_TEAM } from "../router";
+import rukzak from "../img/rukzak.jpg";
+import stickers from "../img/stickers.jpg";
 import jbl from "../img/jbl.jpg";
-import flip from "../img/flip.jpg";
+import yaplus from "../img/yaplus.jpg";
 import miband from "../img/miband.jpg";
-import xiaomi from "../img/xiaomi.jpg";
+import merch from "../img/merch.jpg";
+import { setActiveTeam } from "./../store/data/actions";
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: "users",
+    };
+    this.showTeam = this.showTeam.bind(this);
+  }
+  showTeam(id) {
+    if (this.state.activeTab === "teams") {
+      this.props.setActiveTeam(id);
+      this.props.router.pushModal(MODAL_VIEW_TEAM);
+    }
+  }
   componentDidMount() {
     getRating()
       .then((res) => {
@@ -38,26 +55,71 @@ class Home extends React.Component {
       });
   }
   render() {
-    const { id, router, rating } = this.props;
-    const prizes = [
-      { img: cup, text: "Термокружка", description: "1-10 место" },
-      {
-        img: flip,
-        text: "Портативная акустика JBL Flip 4",
-        description: "1 место",
-      },
-      { img: xiaomi, text: "Xiaomi AirDots Pro", description: "2 место" },
-      {
-        img: miband,
-        text: "Браслет Xiaomi Mi Band 5 Black",
-        description: "3 место",
-      },
-      {
-        img: jbl,
-        text: "JBL Clip 3",
-        description: "4-5 место",
-      },
-    ];
+    const { id, router, rating, user } = this.props;
+
+    const prizes = {
+      0: [
+        {
+          img: miband,
+          text: "Браслет Xiaomi Mi Band 5 Black",
+          description: "1 место",
+        },
+        {
+          img: jbl,
+          text: "JBL Clip 3",
+          description: "2-3 место",
+        },
+        {
+          img: stickers,
+          text: "Набор из 3 стикерпаков на выбор",
+          description: "4-15 место",
+        },
+      ],
+      1: [
+        {
+          img: miband,
+          text: "Браслет Xiaomi Mi Band 5 Black",
+          description: "1 место",
+        },
+        {
+          img: jbl,
+          text: "JBL Clip 3",
+          description: "2-3 место",
+        },
+        {
+          img: stickers,
+          text: "Набор из 3 стикерпаков на выбор",
+          description: "4-15 место",
+        },
+      ],
+      2: [
+        {
+          img: rukzak,
+          text: "Рюкзак из баннеров",
+          description: "1 место",
+        },
+        {
+          img: yaplus,
+          text: "Яндекс.Плюс на 1 год",
+          description: "2-4 место",
+        },
+        {
+          img: stickers,
+          text: "Набор из 3 стикерпаков на выбор",
+          description: "5-10 место",
+        },
+      ],
+    };
+
+    const teamPr = {
+      2: [
+        {
+          img: merch,
+          text: "Набор атрибутики от проекта Экопоколение, Делай! и ВЭБ.РФ",
+          description: "1 место",
+        },
+      ],
+    };
 
     return (
       <Panel id={id}>
@@ -71,47 +133,80 @@ class Home extends React.Component {
         >
           Рейтинг
         </PanelHeader>
+
+        <Tabs>
+          <TabsItem
+            onClick={() => this.setState({ activeTab: "users" })}
+            selected={this.state.activeTab === "users"}
+          >
+            Участники
+          </TabsItem>
+          <TabsItem
+            onClick={() => this.setState({ activeTab: "teams" })}
+            selected={this.state.activeTab === "teams"}
+          >
+            Команды
+          </TabsItem>
+        </Tabs>
         <Div>
           <Title level="2" weight="medium">
             Призы победителям
           </Title>
         </Div>
-        <Gallery slideWidth="90%" align="center" style={{ height: 180 }}>
-          {prizes.map(({ img, text, description }, i) => (
-            <div className="prize" key={i}>
-              <div
-                className="prize__photo"
-                style={{
-                  backgroundImage: `url(${img})`,
-                }}
-              />
-              <div className="prize__description">
-                <Text weight="medium">{text}</Text>
-                <Caption level="2" weight="regular">
-                  {description}
-                </Caption>
-              </div>
-            </div>
-          ))}
-        </Gallery>
+
         {rating !== null && rating !== "error" && (
           <div>
+            <Gallery
+              slideWidth="90%"
+              align="center"
+              className="rating__gallery"
+            >
+              {this.state.activeTab === "teams" &&
+                teamPr[2].map(({ img, text, description, id }, i) => (
+                  <div className="prize" key={i}>
+                    <div
+                      className="prize__photo"
+                      style={{
+                        backgroundImage: `url(${img})`,
+                      }}
+                    />
+                    <div className="prize__description">
+                      <Text weight="medium">{text}</Text>
+                      <Caption level="2" weight="regular">
+                        {description}
+                      </Caption>
+                    </div>
+                  </div>
+                ))}
+              {this.state.activeTab === "users" &&
+                prizes[user.category].map(({ img, text, description }, i) => (
+                  <div className="prize" key={i}>
+                    <div
+                      className="prize__photo"
+                      style={{
+                        backgroundImage: `url(${img})`,
+                      }}
+                    />
+                    <div className="prize__description">
+                      <Text weight="medium">{text}</Text>
+                      <Caption level="2" weight="regular">
+                        {description}
+                      </Caption>
+                    </div>
+                  </div>
+                ))}
+            </Gallery>
             <Div>
-              <Title level="2" weight="medium">
-                Твоя позиция
-              </Title>
-              {/* <FormStatus header="Хочешь больше баллов?" mode="default">
-                Делись записью на стене через приложение и получай 0.5 балла за
-                приглашенного друга
-              </FormStatus> */}
-              <RatingCell user={rating.user} />
+              {!!rating[this.state.activeTab].user?.rating && (
+                <RatingCell user={rating[this.state.activeTab].user} />
+              )}
             </Div>
+            {!!rating[this.state.activeTab].user?.rating && <Separator />}
             <Div>
-              <Title level="2" weight="medium">
-                Общий рейтинг
-              </Title>
-              {rating.users.map((user) => (
-                <RatingCell user={user} />
+              {rating[this.state.activeTab].all.map((user, i) => (
+                <div key={i} onClick={() => this.showTeam(user.id)}>
+                  <RatingCell user={user} />
+                </div>
               ))}
             </Div>
           </div>
@@ -142,7 +237,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    ...bindActionCreators({ setRating }, dispatch),
+    ...bindActionCreators({ setRating, setActiveTeam }, dispatch),
   };
 }
 

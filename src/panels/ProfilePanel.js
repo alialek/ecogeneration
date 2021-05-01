@@ -1,13 +1,17 @@
 import { withRouter } from "@happysanta/router";
 import {
+  Icon20GearOutline,
   Icon20RepostCircleFillGreen,
   Icon28NotificationCircleFillGray,
-  Icon36CoinsStacks2Outline,
 } from "@vkontakte/icons";
 import {
   Avatar,
+  Caption,
+  Card,
   Counter,
   Div,
+  FormItem,
+  FormLayout,
   Panel,
   PanelHeader,
   PanelSpinner,
@@ -23,10 +27,10 @@ import { bindActionCreators } from "redux";
 import monocle from "../img/monocle.png";
 import party from "../img/party.png";
 import pensive from "../img/pensive.png";
-import { MODAL_ABOUT, MODAL_TEST } from "../router";
+import { MODAL_ABOUT, MODAL_EDIT_USER, MODAL_TEST } from "../router";
 import { enableNotifications, shareWallPost } from "./../api/vk/index";
 import TaskCard from "./../components/TaskCard";
-import { setActiveTask, setTasks } from "./../store/data/actions";
+import { setActiveTask, setTasks, setTest } from "./../store/data/actions";
 import "./home.css";
 class Home extends React.Component {
   constructor(props) {
@@ -35,18 +39,36 @@ class Home extends React.Component {
     this.state = {
       activeTab: "new",
     };
+
+    this.getClickAction = this.getClickAction.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.openEditUserModal = this.openEditUserModal.bind(this);
   }
 
   getAmountOfDeclined() {
-    return this.props.tasks.user.reduce(
+    return this.props.tasks.user.personal.reduce(
       (acc, val) => (val.status === "decline" ? acc + 1 : acc),
       0,
     );
   }
 
+  getClickAction(task) {
+    console.log(task.block);
+    if (task.block) return () => {};
+
+    return task.typeTask === "test"
+      ? this.openModal(task, MODAL_TEST)
+      : this.openModal(task, MODAL_ABOUT);
+  }
+
+  openEditUserModal() {
+    this.props.router.pushModal(MODAL_EDIT_USER);
+  }
+
   openModal(task, page) {
     this.props.setActiveTask(task);
-    this.props.router.pushModal(MODAL_TEST);
+    if (task.typeTask === "test") this.props.setTest(task.test);
+    this.props.router.pushModal(page);
   }
 
   render() {
@@ -56,34 +78,45 @@ class Home extends React.Component {
       <Panel id={id}>
         <PanelHeader
           separator={false}
-          left={
-            <div className="d-row align-center">
-              <Icon36CoinsStacks2Outline width={26} />
-              <Title level="3" className="point-counter" weight="medium">
-                {user?.score}
-              </Title>
-            </div>
-          }
+          // left={
+          //   <div className="d-row align-center panel__coins">
+          //     <Icon36CoinsStacks2Outline width={26} />
+          //     <Title level="3" className="point-counter" weight="medium">
+          //       {user?.score}
+          //     </Title>
+          //   </div>
+          // }
         >
           Профиль
         </PanelHeader>
         {tasks !== null && tasks !== "error" && profile !== null && (
           <div>
-            <div className="d-col align-center profile">
-              <Avatar size="80px" src={profile.photo_200}></Avatar>
-              <Title className="profile__name" level="3" weight="bold">
-                {profile.first_name} {profile.last_name}
-              </Title>
-            </div>
+            <Div>
+              <Card>
+                <Div className="d-row justify-space-between">
+                  <div className="d-row">
+                    <Avatar size="80px" src={profile.photo_200}></Avatar>
+                    <div className="ml-12">
+                      <Title className="profile__name" level="2" weight="bold">
+                        {profile.first_name} {profile.last_name}
+                      </Title>
+                      <Caption level="1">Баллов: {user.score}</Caption>
+                    </div>
+                  </div>
+                  <div
+                    className="mt-12 pointer"
+                    onClick={this.openEditUserModal}
+                  >
+                    <Icon20GearOutline />
+                  </div>
+                </Div>
+              </Card>
+            </Div>
             <SimpleCell
               className="profile__invite"
               onClick={() => shareWallPost(profile.id)}
               before={
-                <Avatar
-                  style={{ background: "var(--accent)" }}
-                  size={28}
-                  shadow={false}
-                >
+                <Avatar className="profile__icon" size={28} shadow={false}>
                   <Icon20RepostCircleFillGreen />
                 </Avatar>
               }
@@ -97,11 +130,7 @@ class Home extends React.Component {
                 className="profile__invite"
                 onClick={() => enableNotifications()}
                 before={
-                  <Avatar
-                    style={{ background: "var(--accent)" }}
-                    size={28}
-                    shadow={false}
-                  >
+                  <Avatar className="profile__icon" size={28} shadow={false}>
                     <Icon28NotificationCircleFillGray />
                   </Avatar>
                 }
@@ -130,40 +159,41 @@ class Home extends React.Component {
                 )}
               </TabsItem>
             </Tabs>
-            {this.state.activeTab === "new" &&
-              (tasks.all.length ? (
-                tasks.all.map((task, i) => (
-                  <Div
-                    key={i}
-                    onClick={
-                      task.type === "test"
-                        ? () => this.openModal(task, MODAL_TEST)
-                        : () => this.openModal(task, MODAL_ABOUT)
+            {this.state.activeTab === "new" && (
+              <FormLayout>
+                {this.state.activeTab === "new" &&
+                Object.keys(tasks.all.personal).length ? (
+                  Object.keys(tasks.all.personal).map((title, n) => (
+                    <FormItem key={n} top={title}>
+                      {tasks.all.personal[title].map((task, i) => (
+                        <div key={i} onClick={() => this.getClickAction(task)}>
+                          <TaskCard task={task} type={this.state.activeTab} />
+                        </div>
+                      ))}{" "}
+                    </FormItem>
+                  ))
+                ) : (
+                  <Placeholder
+                    icon={
+                      <img
+                        alt="Заглушка"
+                        className="emoji-placeholder"
+                        src={party}
+                      />
                     }
+                    header="Все выполнено"
                   >
-                    <TaskCard task={task} type={this.state.activeTab} />
-                  </Div>
-                ))
-              ) : (
-                <Placeholder
-                  icon={
-                    <img
-                      alt="Заглушка"
-                      className="emoji-placeholder"
-                      src={party}
-                    />
-                  }
-                  header="Все выполнено"
-                >
-                  Скоро появятся новые задания!
-                </Placeholder>
-              ))}
+                    Скоро появятся новые задания!
+                  </Placeholder>
+                )}
+              </FormLayout>
+            )}
             {this.state.activeTab === "done" &&
-              (tasks.user.length ? (
-                tasks.user.map((task, n) => (
-                  <Div key={n} onClick={() => this.openModal(task)}>
+              (tasks.user.personal.length ? (
+                tasks.user.personal.map((task, n) => (
+                  <div key={n} onClick={() => this.getClickAction(task)}>
                     <TaskCard task={task} type={this.state.activeTab} />
-                  </Div>
+                  </div>
                 ))
               ) : (
                 <Placeholder
@@ -209,7 +239,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    ...bindActionCreators({ setTasks, setActiveTask }, dispatch),
+    ...bindActionCreators({ setTasks, setActiveTask, setTest }, dispatch),
   };
 }
 

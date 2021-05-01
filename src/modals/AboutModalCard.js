@@ -6,8 +6,8 @@ import {
   ANDROID,
   Button,
   Div,
+  FormItem,
   FormLayout,
-  FormLayoutGroup,
   Gallery,
   Input,
   IOS,
@@ -17,7 +17,6 @@ import {
   platform,
   Text,
 } from "@vkontakte/vkui";
-import "./card.css";
 import { postTask } from "./../api/rest/task";
 import showSnackbar from "./../helpers/generateSnackbar";
 import {
@@ -28,8 +27,9 @@ import {
 import { setSnackbar, setTasks } from "./../store/data/actions";
 import { getTasks } from "./../api/rest/tasks";
 import { showImages } from "../api/vk";
-import FileUploader from "./fileUploader";
+import FileUploader from "../components/fileUploader";
 import { POPOUT_SPINNER } from "./../router/index";
+import "../App.css";
 
 class AboutCard extends Component {
   constructor(props) {
@@ -73,7 +73,7 @@ class AboutCard extends Component {
         : (data = { ...data, answers: this.state.answers });
       return postTask(data)
         .then((res) => {
-          this.props.router.popPage();
+          this.props.router.replaceModal(null);
           this.props.setSnackbar(
             showSnackbar(
               <Icon20CheckCircleFillGreen />,
@@ -106,17 +106,22 @@ class AboutCard extends Component {
   }
 
   render() {
-    const { task, id, router } = this.props;
+    const { task, id, router, team, user } = this.props;
+    console.log(router.getCurrentLocation());
+    const isAdmin =
+      router.getCurrentLocation().route.pageId === "/"
+        ? true
+        : team?.admins.some((admin) => admin.id === user.id);
     return (
       <ModalPage
         id={id}
-        onClose={() => router.popPage()}
+        onClose={() => router.replaceModal(null)}
         header={
           <ModalPageHeader
             left={
               <Fragment>
                 {platform === ANDROID && (
-                  <PanelHeaderButton onClick={() => router.popPage()}>
+                  <PanelHeaderButton onClick={() => router.replaceModal(null)}>
                     <Icon24Cancel />
                   </PanelHeaderButton>
                 )}
@@ -125,7 +130,7 @@ class AboutCard extends Component {
             right={
               <Fragment>
                 {platform === IOS && (
-                  <PanelHeaderButton onClick={() => router.popPage()}>
+                  <PanelHeaderButton onClick={() => router.replaceModal(null)}>
                     Закрыть
                   </PanelHeaderButton>
                 )}
@@ -137,73 +142,95 @@ class AboutCard extends Component {
         }
       >
         {task !== null && (
-          <Div>
+          <Div className="pt-0">
             {task.images?.length && (
-              <Gallery slideWidth="100%" style={{ height: 150 }} bullets="dark">
+              <Gallery
+                slideWidth="100%"
+                className="about__gallery"
+                bullets="dark"
+              >
                 {task.images.map((image, i) => (
                   <div
+                    key={i}
                     onClick={() => showImages(task.images, i)}
                     style={{
                       backgroundImage: `url(${image})`,
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
                     }}
+                    className="about__gallery-image"
                   />
                 ))}
               </Gallery>
             )}
-            <div className="description">
-              {task.description.split(/\n/).map((text, i) => (
-                <Text key={i}>{text}</Text>
-              ))}
-            </div>
+            <FormItem top="Описание">
+              <div className="description">{task.description}</div>
+            </FormItem>
             {task.status === "decline" && (
-              <Text className="description">
+              <FormItem top="Ответ отклонен">
+                <Text className="description">
+                  Причина: <span className="comment"> {task.comment}</span>
+                </Text>
+              </FormItem>
+            )}
+            {isAdmin && (
+              <>
+                {(!task.hasOwnProperty("status") ||
+                  task.status === "decline") && (
+                  <FormLayout className="custom-form">
+                    <FormItem top="Решение">
+                      {task?.typeTask === "link" && (
+                        <Input
+                          type="text"
+                          onInput={this.setInput}
+                          placeholder="Ссылка на пост"
+                        />
+                      )}
+                      {task?.typeTask === "photo" && (
+                        <Div>
+                          <FileUploader
+                            withIcon={true}
+                            buttonText="Загрузить изображения"
+                            onChange={this.onDrop}
+                            singleImage={true}
+                            withPreview={true}
+                            imgExtension={[".jpg", ".png", ".jpeg"]}
+                            maxFileSize={5242880}
+                          />
+                        </Div>
+                      )}
+                    </FormItem>
+                  </FormLayout>
+                )}
+                {!task.hasOwnProperty("status") || task.status === "decline" ? (
+                  <Button
+                    size="l"
+                    stretched
+                    disabled={
+                      (task?.typeTask === "photo" &&
+                        !this.state.images.length) ||
+                      (task?.typeTask === "link" && this.state.link === null)
+                    }
+                    onClick={() => this.sendAnswer(task.typeTask)}
+                    mode="primary"
+                  >
+                    Отправить
+                  </Button>
+                ) : (
+                  <Button
+                    size="l"
+                    onClick={() => router.replaceModal(null)}
+                    mode="primary"
+                    stretched
+                  >
+                    Закрыть
+                  </Button>
+                )}
+              </>
+            )}
+            {!isAdmin && (
+              <Text>
                 {" "}
-                Причина: <span className="comment"> {task.comment}</span>
+                На командные задания могут отвечать только администраторы
               </Text>
-            )}
-            {(!task.hasOwnProperty("status") || task.status === "decline") && (
-              <FormLayout className="custom-form">
-                <FormLayoutGroup top="Решение">
-                  {task?.typeTask === "link" && (
-                    <Input
-                      type="text"
-                      onInput={this.setInput}
-                      placeholder="Ссылка на пост"
-                    />
-                  )}
-                  {task?.typeTask === "photo" && (
-                    <FileUploader
-                      withIcon={true}
-                      buttonText="Загрузить изображения"
-                      onChange={this.onDrop}
-                      singleImage={true}
-                      withPreview={true}
-                      imgExtension={[".jpg", ".png", ".jpeg"]}
-                      maxFileSize={5242880}
-                    />
-                  )}
-                </FormLayoutGroup>
-              </FormLayout>
-            )}
-            {!task.hasOwnProperty("status") || task.status === "decline" ? (
-              <Button
-                size="xl"
-                onClick={() => this.sendAnswer(task.typeTask)}
-                mode="primary"
-              >
-                Отправить
-              </Button>
-            ) : task.type === "test" ? (
-              <Button size="xl" onClick={this.openTest} mode="primary">
-                Решить тест
-              </Button>
-            ) : (
-              <Button size="xl" onClick={() => router.popPage()} mode="primary">
-                Закрыть
-              </Button>
             )}
           </Div>
         )}
@@ -216,6 +243,8 @@ class AboutCard extends Component {
 const mapStateToProps = (state) => {
   return {
     task: state.data.activeTask,
+    team: state.data.team,
+    user: state.data.user,
   };
 };
 

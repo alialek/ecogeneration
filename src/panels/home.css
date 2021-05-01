@@ -50,3 +50,24 @@
   bottom: 8px;
   color: black;
 }
+
+.justify-space-between {
+  justify-content: space-between;
+}
+
+.mt-12 {
+  margin-top: 12px;
+}
+.ml-12 {
+  margin-left: 12px;
+}
+.pointer {
+  cursor: pointer;
+}
+.profile__icon {
+  background: var(--accent);
+}
+
+.rating__gallery {
+  height: 180px;
+}

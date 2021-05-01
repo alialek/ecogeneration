@@ -6,3 +6,16 @@
   padding: 8px 0;
   margin: 4px 0;
 }
+
+.d-flex {
+  display: flex;
+}
+.rating-cell__users {
+  gap: 8px;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+.cell-avatar .vkuiAvatar__in {
+  border-radius: 100% !important;
+  overflow: hidden;
+}

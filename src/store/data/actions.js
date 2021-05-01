@@ -10,7 +10,10 @@ import {
   SET_TASKS,
   SET_USER,
   SET_TEST,
+  SET_TEAM,
+  SET_ACTIVE_TEAM,
 } from "./actionTypes.js";
+import { getTeam } from "./../../api/rest/team";
 
 export const setColorScheme = (inputData) => ({
   type: SET_COLOR_SCHEME,
@@ -54,6 +57,25 @@ export const setProfile = (inputData) => ({
     data: inputData,
   },
 });
+export const setTeam = (inputData) => (dispatch) => {
+  getTeam()
+    .then((res) => {
+      dispatch({
+        type: SET_TEAM,
+        payload: {
+          data: res.data,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_TEAM,
+        payload: {
+          data: "error",
+        },
+      });
+    });
+};
 export const setActiveTask = (inputData) => ({
   type: SET_ACTIVE_TASK,
   payload: {
@@ -74,6 +96,12 @@ export const setIsOnboardingViewed = (inputData) => ({
 });
 export const setIsNotificationsEnabled = (inputData) => ({
   type: SET_IS_NOTIFICATIONS_ENABLED,
+  payload: {
+    data: inputData,
+  },
+});
+export const setActiveTeam = (inputData) => ({
+  type: SET_ACTIVE_TEAM,
   payload: {
     data: inputData,
   },

@@ -1,36 +1,85 @@
-import { Panel, Div, Button, Gallery, Title, Text } from "@vkontakte/vkui";
+import {
+  Panel,
+  Div,
+  Button,
+  Gallery,
+  Title,
+  Text,
+  SimpleCell,
+} from "@vkontakte/vkui";
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import earth from "../img/earth.png";
 import notebook from "../img/notebook.png";
+import hugging from "../img/hugging.png";
+import medal from "../img/medal.png";
 import "./intro.css";
 import { withRouter } from "@happysanta/router";
-import { setIsOnboardingViewed } from "./../store/data/actions";
+import {
+  setIsOnboardingViewed,
+  setTasks,
+  setSnackbar,
+} from "./../store/data/actions";
 import { setIntroViewed } from "../api/vk";
+import { POPOUT_SPINNER } from "../router";
+import { reg } from "./../api/rest/reg";
+import { getTasks } from "./../api/rest/tasks";
+import { Icon20CancelCircleFillRed } from "@vkontakte/icons";
+import showSnackbar from "./../helpers/generateSnackbar";
 
 class Intro extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       slideIndex: 0,
-
+      categories: [
+        { id: 0, title: "Младшая", description: "Ученики 1-5 классов" },
+        {
+          id: 1,
+          title: "Средняя",
+          description: "Ученики 6-11 классов и студенты ССУЗ",
+        },
+        {
+          id: 2,
+          title: "Старшая",
+          description: "Студенты ВУЗов",
+        },
+      ],
+      chosenCategory: null,
       slides: [
         {
-          title: "Что такое Экопоколение?",
+          title: "Что такое «Экопоколение»‎ и для чего это приложение?",
           description:
-            "Привет! На протяжении следующих трех недель тебе предстоит научиться азам ответственного потребления, узнать о главных экологических проблемах, а также закрепить полученные навыки и выполнить ряд заданий.",
+            "Привет! На протяжении следующего месяца тебе предстоит научиться азам ответственного потребления, узнать об интересных экопривычках, а также закрепить полученные навыки и выполнить ряд заданий.",
           icon: earth,
           button: "Далее",
-          isValid: () => true,
         },
         {
           title: "Какие задания есть?",
           description:
-            "Приступай к заданиям и не бойся трудностей, и не забудь посетить вебинары, где будет рассказана теоретическая часть, которую тебе предстоит применить на практике!",
+            "Обо всем узнаешь уже на практике! Приступай к заданиям и не бойся трудностей, а также не забудь посетить образовательный вебинар, где будет рассказана теоретическая часть, которую тебе предстоит применить на практике!",
           icon: notebook,
+          button: "Далее",
+        },
+        {
+          title: "Формат участия",
+          description:
+            "В новом сезоне «Экопоколения»‎ ты можешь участвовать индивидуально или в команде от 2 до 10 человек.",
+          icon: medal,
+          button: "Далее",
+        },
+        {
+          title: "Немного о нас",
+          description:
+            "Проект «Экопоколение 2.0»‎ реализуется Всероссийской общественной организацией волонтеров-экологов «Делай!»‎ и Государственной корпорацией развития ВЭБ.РФ – вместе мы стремимся воспитать новое экопоколение.",
+          icon: hugging,
+          button: "Далее",
+        },
+        {
+          title: "Выбери категорию участия",
+
           button: "Продолжить",
-          isValid: () => true,
         },
       ],
     };
@@ -41,6 +90,27 @@ class Intro extends React.Component {
   }
 
   registerUser() {
+    this.props.router.pushPopup(POPOUT_SPINNER);
+    reg({ id: this.state.chosenCategory })
+      .then((res) => {
+        getTasks()
+          .then((res) => {
+            this.props.setTasks(res.data);
+            this.props.router.replacePopup(null);
+          })
+          .catch((err) => {
+            this.props.setTasks("error");
+          });
+      })
+      .catch((err) => {
+        this.props.setSnackbar(
+          showSnackbar(
+            <Icon20CancelCircleFillRed />,
+            "Не получилось сохранить выбранную категорию",
+          ),
+        );
+      });
+
     this.props.setIsOnboardingViewed(true);
     setIntroViewed();
   }
@@ -60,7 +130,7 @@ class Intro extends React.Component {
           slideIndex={this.state.slideIndex}
           slideWidth="100%"
           align="right"
-          style={{ width: "100%", height: "100vh" }}
+          className="intro__gallery"
         >
           {this.state.slides.map((slide, i) => (
             <div key={i} className="slide">
@@ -69,8 +139,9 @@ class Intro extends React.Component {
                   {slide.title}
                 </Title>
               </Div>
-              {slide?.icon && (
-                <Div className="d-col align-center">
+
+              <Div className="d-col align-center">
+                {slide?.icon && (
                   <div className="blob-holder">
                     {" "}
                     <div className="blob"></div>{" "}
@@ -80,36 +151,58 @@ class Intro extends React.Component {
                       src={slide.icon}
                     />
                   </div>
+                )}
+                {this.state.slideIndex === 4 &&
+                  this.state.categories.map((category) => (
+                    <>
+                      <SimpleCell
+                        className={`intro__category ${
+                          this.state.chosenCategory === category.id &&
+                          "intro__category--active"
+                        }`}
+                        onClick={() =>
+                          this.setState({ chosenCategory: category.id })
+                        }
+                        description={category.description}
+                      >
+                        {category.title}
+                      </SimpleCell>
+                    </>
+                  ))}
 
-                  <Text className="slide__text">{slide.description} </Text>
-                  {slide?.bullets && (
-                    <ul>
-                      {slide.bullets.map((bullet, n) => (
-                        <li key={n}>
-                          {" "}
-                          <Text>{bullet}</Text>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Div>
-              )}
+                <Text className="slide__text">{slide.description} </Text>
+                {slide?.bullets && (
+                  <ul>
+                    {slide.bullets.map((bullet, n) => (
+                      <li key={n}>
+                        {" "}
+                        <Text>{bullet}</Text>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Div>
 
               <Div className="slide__button-holder">
                 <Button
+                  disabled={
+                    this.state.slideIndex === 4 &&
+                    this.state.chosenCategory === null
+                      ? true
+                      : false
+                  }
                   onClick={() => {
                     if (
                       slide.button === "Сохранить" ||
                       slide.button === "Далее"
                     )
-                      slide.isValid()
-                        ? this.changeIndex(this.state.slideIndex + 1)
-                        : slide.fallBack();
+                      this.changeIndex(this.state.slideIndex + 1);
 
                     if (slide.button === "Продолжить") this.registerUser();
                   }}
                   mode="primary"
-                  size="xl"
+                  size="l"
+                  stretched
                 >
                   {slide.button}
                 </Button>
@@ -122,15 +215,14 @@ class Intro extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    ...bindActionCreators({ setIsOnboardingViewed }, dispatch),
+    ...bindActionCreators(
+      { setIsOnboardingViewed, setTasks, setSnackbar },
+      dispatch,
+    ),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Intro));
+export default connect(null, mapDispatchToProps)(withRouter(Intro));

@@ -16,6 +16,7 @@ instance.interceptors.request.use(
     } catch {
       token = window.token || null;
     }
+
     if (config.method !== "get") {
       config.headers.common["Content-Type"] = "application/json";
     }

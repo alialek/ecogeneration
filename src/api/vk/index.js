@@ -1,13 +1,11 @@
 import { VKMiniAppAPI } from "@vkontakte/vk-mini-apps-api";
 import { store } from "../../index";
-import {
-  setColorScheme,
-  setIsOnboardingViewed,
-} from "../../store/data/actions";
+import { setColorScheme } from "../../store/data/actions";
 const api = new VKMiniAppAPI();
 
 const STORAGE_KEYS = {
-  STATUS: "status",
+  STATUS: "status_second",
+  TEAM_GROUP: "team_group",
 };
 
 export const initApp = () => api.initApp();
@@ -31,8 +29,8 @@ export const tapticSelectNotification = () => {
 export const shareWallPost = (id) => {
   api.bridge.send("VKWebAppShowWallPostBox", {
     message:
-      "Спасай планету вместе с нами, соревнуйся с другими участниками и получай призы! \n \n Вступай в Экопоколение. \n Проект @ecodelai(Делай!) и @rosmolodez(Росмолодежь)",
-    attachments: `https://vk.com/app7744255#${id}`,
+      "Спасай планету вместе с нами, соревнуйся с другими участниками и получай призы! \n \n Вступай в Экопоколение. \n Проект @ecodelai(Делай!) и @vebrf(ВЭБ.РФ)",
+    attachments: `https://vk.com/app7744255#?referral=${id}`,
   });
 };
 
@@ -51,4 +49,15 @@ export const isIntroViewed = async () => {
 };
 export const setIntroViewed = async () => {
   api.storageSet(STORAGE_KEYS.STATUS, "viewed");
+};
+export const setTeamGroupClosed = async () => {
+  api.storageSet(STORAGE_KEYS.STATUS, "closed");
+};
+export const isTeamGroupClosed = async () => {
+  return await api.storageGet(STORAGE_KEYS.STATUS);
+};
+export const shareInviteLink = (id) => {
+  api.bridge.send("VKWebAppShare", {
+    link: `https://vk.com/app7744255#?team=${id}`,
+  });
 };

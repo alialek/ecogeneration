@@ -20,3 +20,21 @@
 .emoji-placeholder {
   width: 64px;
 }
+
+.Snackbar {
+  z-index: 100 !important;
+  position: absolute;
+}
+.vkuiPlaceholder--stretched {
+  top: 50vh;
+  bottom: 50vh;
+}
+#modal_MANAGE_TEAM .vkuiIconButton {
+  height: 24px;
+}
+
+#modal_TEST .vkuiFormItem,
+#modal_CREATE_TEAM .vkuiFormItem,
+#modal_about .vkuiFormItem {
+  padding: 12px 0;
+}

@@ -1,0 +1,46 @@
+.answerCard {
+  border: 1px solid #777777;
+  border-radius: 3px;
+  margin-top: 4px;
+}
+
+.answerCard--IsChosen {
+  border: 1px solid var(--accent);
+}
+
+.test__holder {
+  padding-top: 0px;
+}
+
+.test__gallery {
+  height: 100%;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.full-height {
+  height: 100vh;
+}
+.w-auto {
+  width: auto;
+}
+
+.about__gallery {
+  height: 150px;
+}
+
+.about__gallery-image {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.pt-0 {
+  padding-top: 0px;
+}
+
+.description {
+  white-space: pre-line;
+}

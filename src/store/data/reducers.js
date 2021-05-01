@@ -10,6 +10,8 @@ import {
   SET_IS_ONBOARDING_VIEWED,
   SET_IS_NOTIFICATIONS_ENABLED,
   SET_TEST,
+  SET_TEAM,
+  SET_ACTIVE_TEAM,
 } from "./actionTypes";
 
 const initialState = {
@@ -29,12 +31,24 @@ const initialState = {
       question: "Сколько автору лет лет?",
       answers: [3, 4, 5, 6],
     },
+    {
+      id: 2,
+      question: "Как ехать?",
+      answers: [4, 5, 6, 7],
+    },
+    {
+      id: 3,
+      question: "Тык?",
+      answers: [3, 4, 5, 6],
+    },
   ],
   taskStates: {
     verified: "Выполнено",
     unverified: "Проверяется",
     decline: "Отклонено",
   },
+  team: null,
+  activeTeam: null,
 };
 
 export const dataReducer = (state = initialState, action) => {
@@ -46,6 +60,7 @@ export const dataReducer = (state = initialState, action) => {
       };
     }
     case SET_SNACKBAR: {
+      console.log(action.payload.data);
       return {
         ...state,
         snackbar: action.payload.data,
@@ -75,6 +90,12 @@ export const dataReducer = (state = initialState, action) => {
         news: action.payload.data,
       };
     }
+    case SET_ACTIVE_TEAM: {
+      return {
+        ...state,
+        activeTeam: action.payload.data,
+      };
+    }
     case SET_USER: {
       return {
         ...state,
@@ -94,9 +115,31 @@ export const dataReducer = (state = initialState, action) => {
       };
     }
     case SET_TASKS: {
+      const personalGroups = {};
+      const teamGroups = {};
+      action.payload.data.all.personal.map((task) =>
+        personalGroups[task.group]
+          ? personalGroups[task.group].push(task)
+          : (personalGroups[task.group] = [task]),
+      );
+
+      action.payload.data.all.team.map((task) =>
+        teamGroups[task.group]
+          ? teamGroups[task.group].push(task)
+          : (teamGroups[task.group] = [task]),
+      );
+      action.payload.data.all.personal = personalGroups;
+      action.payload.data.all.team = teamGroups;
+      console.log(action.payload.data);
       return {
         ...state,
         tasks: action.payload.data,
+      };
+    }
+    case SET_TEAM: {
+      return {
+        ...state,
+        team: action.payload.data,
       };
     }
     case SET_ACTIVE_TASK: {
