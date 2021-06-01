@@ -64,9 +64,6 @@
 .pointer {
   cursor: pointer;
 }
-.profile__icon {
-  background: var(--accent);
-}
 
 .rating__gallery {
   height: 180px;
