@@ -23,12 +23,11 @@ import { getRating } from "./../api/rest/rating";
 import { setRating } from "../store/data/actions";
 import RatingCell from "../components/RatingCell";
 import { MODAL_INFO, MODAL_VIEW_TEAM } from "../router";
-import rukzak from "../img/rukzak.jpg";
-import stickers from "../img/stickers.jpg";
-import jbl from "../img/jbl.jpg";
-import yaplus from "../img/yaplus.jpg";
-import miband from "../img/miband.jpg";
-import merch from "../img/merch.jpg";
+import offline1 from "../img/1-offine.jpg";
+import offline25 from "../img/2-5-offline.jpg";
+import offline69 from "../img/6-9-offline.jpg";
+import online1 from "../img/1-online.jpg";
+import online2 from "../img/2-online.jpg";
 import { setActiveTeam } from "./../store/data/actions";
 
 class Home extends React.Component {
@@ -60,66 +59,44 @@ class Home extends React.Component {
     const prizes = {
       0: [
         {
-          img: miband,
-          text: "Браслет Xiaomi Mi Band 5 Black",
+          img: offline1,
+          text: "Толстовка и поясная сумка",
           description: "1 место",
         },
         {
-          img: jbl,
-          text: "JBL Clip 3",
-          description: "2-3 место",
+          img: offline25,
+          text: "Толстовка",
+          description: "2-5 место",
         },
         {
-          img: stickers,
-          text: "Набор из 3 стикерпаков на выбор",
-          description: "4-15 место",
+          img: offline69,
+          text: "Поясная сумка",
+          description: "6-9 место",
         },
       ],
       1: [
         {
-          img: miband,
-          text: "Браслет Xiaomi Mi Band 5 Black",
+          img: online1,
+          text: "Сертификат",
           description: "1 место",
         },
         {
-          img: jbl,
-          text: "JBL Clip 3",
-          description: "2-3 место",
-        },
-        {
-          img: stickers,
-          text: "Набор из 3 стикерпаков на выбор",
-          description: "4-15 место",
-        },
-      ],
-      2: [
-        {
-          img: rukzak,
-          text: "Рюкзак из баннеров",
-          description: "1 место",
-        },
-        {
-          img: yaplus,
-          text: "Яндекс.Плюс на 1 год",
-          description: "2-4 место",
-        },
-        {
-          img: stickers,
-          text: "Набор из 3 стикерпаков на выбор",
-          description: "5-10 место",
+          img: online2,
+          text: "Мерч экосистемы",
+          description: "2-25 место",
         },
       ],
     };
 
-    const teamPr = {
-      2: [
-        {
-          img: merch,
-          text: "Набор атрибутики от проекта Экопоколение, Делай! и ВЭБ.РФ",
-          description: "1 место",
-        },
-      ],
-    };
+    // const teamPr = {
+    //   2: [
+    //     {
+    //       img: merch,
+    //       text: "Набор атрибутики от проекта Экопоколение, Делай! и ВЭБ.РФ",
+    //       description: "1 место",
+    //     },
+    //   ],
+    // };
 
     return (
       <Panel id={id}>
@@ -133,7 +110,7 @@ class Home extends React.Component {
         >
           Рейтинг
         </PanelHeader>
-
+        {/* 
         <Tabs>
           <TabsItem
             onClick={() => this.setState({ activeTab: "users" })}
@@ -147,7 +124,7 @@ class Home extends React.Component {
           >
             Команды
           </TabsItem>
-        </Tabs>
+        </Tabs> */}
         <Div>
           <Title level="2" weight="medium">
             Призы победителям
@@ -161,7 +138,7 @@ class Home extends React.Component {
               align="center"
               className="rating__gallery"
             >
-              {this.state.activeTab === "teams" &&
+              {/* {this.state.activeTab === "teams" &&
                 teamPr[2].map(({ img, text, description, id }, i) => (
                   <div className="prize" key={i}>
                     <div
@@ -177,7 +154,7 @@ class Home extends React.Component {
                       </Caption>
                     </div>
                   </div>
-                ))}
+                ))} */}
               {this.state.activeTab === "users" &&
                 prizes[user.category].map(({ img, text, description }, i) => (
                   <div className="prize" key={i}>

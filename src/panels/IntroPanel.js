@@ -10,10 +10,9 @@ import {
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import earth from "../img/earth.png";
-import notebook from "../img/notebook.png";
-import hugging from "../img/hugging.png";
-import medal from "../img/medal.png";
+import ecosyslogo from "../img/ecosyslogo.png";
+import rosmollogo from "../img/rosmollogo.png";
+import townLogo from "../img/townlogo.png";
 import "./intro.css";
 import { withRouter } from "@happysanta/router";
 import {
@@ -34,51 +33,38 @@ class Intro extends React.Component {
     this.state = {
       slideIndex: 0,
       categories: [
-        { id: 0, title: "Младшая", description: "Ученики 1-5 классов" },
+        { id: 0, title: "Оффлайн", description: "Гости и участники форума" },
         {
           id: 1,
-          title: "Средняя",
-          description: "Ученики 6-11 классов и студенты ССУЗ",
-        },
-        {
-          id: 2,
-          title: "Старшая",
-          description: "Студенты ВУЗов",
+          title: "Онлайн",
+          description: "Для тех, кто наблюдает из дома",
         },
       ],
       chosenCategory: null,
       slides: [
         {
-          title: "Что такое «Экопоколение»‎ и для чего это приложение?",
           description:
-            "Привет! На протяжении следующего месяца тебе предстоит научиться азам ответственного потребления, узнать об интересных экопривычках, а также закрепить полученные навыки и выполнить ряд заданий.",
-          icon: earth,
+            "Всероссийский молодежный экологический форум «Экосистема» проходит в Вологодской области с 23 по 27 мая 2021 года в городе Череповец.",
+          icon: townLogo,
           button: "Далее",
         },
         {
           title: "Какие задания есть?",
           description:
-            "Обо всем узнаешь уже на практике! Приступай к заданиям и не бойся трудностей, а также не забудь посетить образовательный вебинар, где будет рассказана теоретическая часть, которую тебе предстоит применить на практике!",
-          icon: notebook,
+            "В рамках форума для онлайн и оффлайн продуманы дополнительные задания, выполняя их и соревнуясь с другими участниками форума ты сможешь выиграть подарки от организаторов.",
+          icon: rosmollogo,
           button: "Далее",
         },
         {
           title: "Формат участия",
           description:
-            "В новом сезоне «Экопоколения»‎ ты можешь участвовать индивидуально или в команде от 2 до 10 человек.",
-          icon: medal,
+            "Перед стартом правильно выбери свою категорию участия, от этого зависят форматы заданий. По каждому заданию необходимо сдавать отчеты в личном кабинете. Проверка отчётов осуществляется вручную, поэтому возможны задержки.",
+          icon: ecosyslogo,
           button: "Далее",
         },
-        {
-          title: "Немного о нас",
-          description:
-            "Проект «Экопоколение 2.0»‎ реализуется Всероссийской общественной организацией волонтеров-экологов «Делай!»‎ и Государственной корпорацией развития ВЭБ.РФ – вместе мы стремимся воспитать новое экопоколение.",
-          icon: hugging,
-          button: "Далее",
-        },
+
         {
           title: "Выбери категорию участия",
-
           button: "Продолжить",
         },
       ],
@@ -135,24 +121,7 @@ class Intro extends React.Component {
           {this.state.slides.map((slide, i) => (
             <div key={i} className="slide">
               <Div>
-                <Title level="1" className="slide__title" weight="semibold">
-                  {slide.title}
-                </Title>
-              </Div>
-
-              <Div className="d-col align-center">
-                {slide?.icon && (
-                  <div className="blob-holder">
-                    {" "}
-                    <div className="blob"></div>{" "}
-                    <img
-                      alt="Иконка"
-                      className="slide__image"
-                      src={slide.icon}
-                    />
-                  </div>
-                )}
-                {this.state.slideIndex === 4 &&
+                {this.state.slideIndex === 3 &&
                   this.state.categories.map((category) => (
                     <>
                       <SimpleCell
@@ -169,24 +138,16 @@ class Intro extends React.Component {
                       </SimpleCell>
                     </>
                   ))}
-
-                <Text className="slide__text">{slide.description} </Text>
-                {slide?.bullets && (
-                  <ul>
-                    {slide.bullets.map((bullet, n) => (
-                      <li key={n}>
-                        {" "}
-                        <Text>{bullet}</Text>
-                      </li>
-                    ))}
-                  </ul>
+                {slide?.icon && (
+                  <img alt="Иконка" className="slide__image" src={slide.icon} />
                 )}
+                <Text className="slide__text">{slide.description} </Text>
               </Div>
 
               <Div className="slide__button-holder">
                 <Button
                   disabled={
-                    this.state.slideIndex === 4 &&
+                    this.state.slideIndex === 3 &&
                     this.state.chosenCategory === null
                       ? true
                       : false
@@ -200,7 +161,7 @@ class Intro extends React.Component {
 
                     if (slide.button === "Продолжить") this.registerUser();
                   }}
-                  mode="primary"
+                  mode="commerce"
                   size="l"
                   stretched
                 >

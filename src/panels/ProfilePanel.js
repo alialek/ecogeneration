@@ -95,7 +95,7 @@ class Home extends React.Component {
               <Card>
                 <Div className="d-row justify-space-between">
                   <div className="d-row">
-                    <Avatar size="80px" src={profile.photo_200}></Avatar>
+                    <Avatar size="70px" src={profile.photo_200}></Avatar>
                     <div className="ml-12">
                       <Title className="profile__name" level="2" weight="bold">
                         {profile.first_name} {profile.last_name}
@@ -112,20 +112,19 @@ class Home extends React.Component {
                 </Div>
               </Card>
             </Div>
-            <SimpleCell
+            {/* <SimpleCell
               className="profile__invite"
               onClick={() => shareWallPost(profile.id)}
               before={
-                <Avatar className="profile__icon" size={28} shadow={false}>
+                <Avatar size={28} shadow={false}>
                   <Icon20RepostCircleFillGreen />
                 </Avatar>
               }
               description="И заработать 0.5 балла, когда друг выполнит первое задание"
             >
               Пригласить друзей
-            </SimpleCell>
-            {isNotificationsEnabled}
-            {!isNotificationsEnabled && (
+            </SimpleCell> */}
+            {/* {!isNotificationsEnabled && (
               <SimpleCell
                 className="profile__invite"
                 onClick={() => enableNotifications()}
@@ -138,7 +137,7 @@ class Home extends React.Component {
               >
                 Включить уведомления
               </SimpleCell>
-            )}
+            )} */}
 
             <Tabs>
               <TabsItem

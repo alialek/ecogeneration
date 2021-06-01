@@ -80,110 +80,110 @@ class App extends React.Component {
     if (location.getPopupId() === POPOUT_SPINNER) {
       return <ScreenSpinner />;
     }
-    if (location.getPopupId() === POPOUT_TEAM_JOIN_CONFIRM) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: "Отмена",
-              autoclose: true,
-              mode: "cancel",
-            },
-            {
-              title: "Отправить",
-              autoclose: true,
-              mode: "destructive",
-              action: () => this.joinTeam(),
-            },
-          ]}
-          actionsLayout="horizontal"
-          onClose={() => this.props.router.replacePopup(null)}
-          header="Заявка на вступление"
-          text="Отправить заявку на вступление в команду? Подтверждение может занять некоторое время."
-        />
-      );
-    }
+    // if (location.getPopupId() === POPOUT_TEAM_JOIN_CONFIRM) {
+    //   return (
+    //     <Alert
+    //       actions={[
+    //         {
+    //           title: "Отмена",
+    //           autoclose: true,
+    //           mode: "cancel",
+    //         },
+    //         {
+    //           title: "Отправить",
+    //           autoclose: true,
+    //           mode: "destructive",
+    //           action: () => this.joinTeam(),
+    //         },
+    //       ]}
+    //       actionsLayout="horizontal"
+    //       onClose={() => this.props.router.replacePopup(null)}
+    //       header="Заявка на вступление"
+    //       text="Отправить заявку на вступление в команду? Подтверждение может занять некоторое время."
+    //     />
+    //   );
+    // }
 
-    if (location.getPopupId() === POPOUT_TEAM_DOWNGRADE_CONFIRM) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: "Отмена",
-              autoclose: true,
-              mode: "cancel",
-            },
-            {
-              title: "Удалить",
-              autoclose: true,
-              mode: "destructive",
-              action: () =>
-                updateTeam({
-                  id: this.props.team.id,
-                  type: "delete",
-                }).then((res) => this.props.setTeam()),
-            },
-          ]}
-          actionsLayout="horizontal"
-          onClose={() => this.props.router.replacePopup(null)}
-          header="Удалить команду"
-          text="Вы уверены, что хотите удалить команду? Весь прогресс будет сброшен"
-        />
-      );
-    }
-    if (location.getPopupId() === POPOUT_TEAM_LEAVE_CONFIRM) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: "Отмена",
-              autoclose: true,
-              mode: "cancel",
-            },
-            {
-              title: "Выйти",
-              autoclose: true,
-              mode: "destructive",
-              action: () =>
-                leaveTeam({
-                  id: this.props.team.id,
-                  type: "exit",
-                }).then((res) => this.props.setTeam()),
-            },
-          ]}
-          actionsLayout="horizontal"
-          onClose={() => this.props.router.replacePopup(null)}
-          header="Выход из команды"
-          text="Вы уверены, что хотите выйти из команды?"
-        />
-      );
-    }
+    // if (location.getPopupId() === POPOUT_TEAM_DOWNGRADE_CONFIRM) {
+    //   return (
+    //     <Alert
+    //       actions={[
+    //         {
+    //           title: "Отмена",
+    //           autoclose: true,
+    //           mode: "cancel",
+    //         },
+    //         {
+    //           title: "Удалить",
+    //           autoclose: true,
+    //           mode: "destructive",
+    //           action: () =>
+    //             updateTeam({
+    //               id: this.props.team.id,
+    //               type: "delete",
+    //             }).then((res) => this.props.setTeam()),
+    //         },
+    //       ]}
+    //       actionsLayout="horizontal"
+    //       onClose={() => this.props.router.replacePopup(null)}
+    //       header="Удалить команду"
+    //       text="Вы уверены, что хотите удалить команду? Весь прогресс будет сброшен"
+    //     />
+    //   );
+    // }
+    // if (location.getPopupId() === POPOUT_TEAM_LEAVE_CONFIRM) {
+    //   return (
+    //     <Alert
+    //       actions={[
+    //         {
+    //           title: "Отмена",
+    //           autoclose: true,
+    //           mode: "cancel",
+    //         },
+    //         {
+    //           title: "Выйти",
+    //           autoclose: true,
+    //           mode: "destructive",
+    //           action: () =>
+    //             leaveTeam({
+    //               id: this.props.team.id,
+    //               type: "exit",
+    //             }).then((res) => this.props.setTeam()),
+    //         },
+    //       ]}
+    //       actionsLayout="horizontal"
+    //       onClose={() => this.props.router.replacePopup(null)}
+    //       header="Выход из команды"
+    //       text="Вы уверены, что хотите выйти из команды?"
+    //     />
+    //   );
+    // }
   }
 
-  joinTeam() {
-    updateTeamMembers({
-      type: "send",
-      id: +this.props.params.team,
-    })
-      .then((res) => {
-        this.props.setSnackbar(
-          showSnackbar(
-            <Icon20CheckCircleFillGreen />,
-            "Заявка на вступление в команду отправлена",
-            () => this.props.setSnackbar(null),
-          ),
-        );
-      })
-      .catch(() =>
-        this.props.setSnackbar(
-          showSnackbar(
-            <Icon20CancelCircleFillRed />,
-            "Не получилось присоединиться к команде",
-            () => this.props.setSnackbar(null),
-          ),
-        ),
-      );
-  }
+  // joinTeam() {
+  //   updateTeamMembers({
+  //     type: "send",
+  //     id: +this.props.params.team,
+  //   })
+  //     .then((res) => {
+  //       this.props.setSnackbar(
+  //         showSnackbar(
+  //           <Icon20CheckCircleFillGreen />,
+  //           "Заявка на вступление в команду отправлена",
+  //           () => this.props.setSnackbar(null),
+  //         ),
+  //       );
+  //     })
+  //     .catch(() =>
+  //       this.props.setSnackbar(
+  //         showSnackbar(
+  //           <Icon20CancelCircleFillRed />,
+  //           "Не получилось присоединиться к команде",
+  //           () => this.props.setSnackbar(null),
+  //         ),
+  //       ),
+  //     );
+  // }
 
   async componentDidMount() {
     isIntroViewed().then((res) => {
@@ -193,13 +193,13 @@ class App extends React.Component {
     getUserInfo().then((res) => {
       this.props.setProfile(res);
     });
-
-    auth(window.location.search, this.props.params.referral).then((res) => {
+    //Второй парамтер - this.props.params.referral
+    auth(window.location.search).then((res) => {
       this.props.setUser(res.data);
       localStorage.setItem("user_ecogen", res.data.token);
-      if (this.props.params.team) {
-        this.props.router.pushPopup(POPOUT_TEAM_JOIN_CONFIRM);
-      }
+      // if (this.props.params.team && !res.data?.team) {
+      //   this.props.router.pushPopup(POPOUT_TEAM_JOIN_CONFIRM);
+      // }
       getTasks()
         .then((res) => {
           this.props.setTasks(res.data);
@@ -230,9 +230,9 @@ class App extends React.Component {
         <TestModalPage id={MODAL_TEST} />
         <AboutModalCard id={MODAL_ABOUT} />
         <DelayInfoModalCard id={MODAL_INFO} />
-        <CreateTeamModalCard id={MODAL_CREATE_TEAM} />
+        {/* <CreateTeamModalCard id={MODAL_CREATE_TEAM} />
         <ManageTeamModalCard id={MODAL_MANAGE_TEAM} />
-        <TeamViewerModal id={MODAL_VIEW_TEAM} />
+        <TeamViewerModal id={MODAL_VIEW_TEAM} /> */}
         <EditUserModal id={MODAL_EDIT_USER} />
       </ModalRoot>
     );
@@ -255,14 +255,14 @@ class App extends React.Component {
                       <Icon28UserCircleOutline />
                     </TabbarItem>
 
-                    <TabbarItem
+                    {/* <TabbarItem
                       onClick={() => router.replacePage(PAGE_TEAM)}
                       selected={VIEW_TEAM === location.getViewId()}
                       data-story={VIEW_TEAM}
                       text="Команда"
                     >
                       <Icon28Users3Outline />
-                    </TabbarItem>
+                    </TabbarItem> */}
 
                     <TabbarItem
                       onClick={() => router.replacePage(PAGE_RATING)}

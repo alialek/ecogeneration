@@ -4,7 +4,7 @@ import { setColorScheme } from "../../store/data/actions";
 const api = new VKMiniAppAPI();
 
 const STORAGE_KEYS = {
-  STATUS: "status_second",
+  STATUS: "status_ecosyst",
   TEAM_GROUP: "team_group",
 };
 

@@ -57,16 +57,11 @@ const EditUserModal = ({ id, user, setTasks, setSnackbar, setUser }) => {
     router.replaceModal(null);
   };
   const categories = [
-    { id: 0, title: "Младшая", description: "Ученики 1-5 классов" },
+    { id: 0, title: "Оффлайн", description: "Гости и участники форума" },
     {
       id: 1,
-      title: "Средняя",
-      description: "Ученики 6-11 классов и студенты ССУЗ",
-    },
-    {
-      id: 2,
-      title: "Старшая",
-      description: "Студенты ВУЗов",
+      title: "Онлайн",
+      description: "Для тех, кто наблюдает из дома",
     },
   ];
   return (
@@ -107,11 +102,13 @@ const EditUserModal = ({ id, user, setTasks, setSnackbar, setUser }) => {
             <SimpleCell
               className={`intro__category w-auto ${
                 chosenCategory === category.id && "intro__category--active"
+              } ${
+                user.category === category.id && "intro__category--disabled"
               }`}
               onClick={() => setChosenCategory(category.id)}
               description={category.description}
             >
-              {category.title}
+              {category.title} {user.category === category.id && "(Выбрано)"}
             </SimpleCell>
           </>
         ))}
