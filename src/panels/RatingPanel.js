@@ -148,15 +148,15 @@ class Home extends React.Component {
             Команды
           </TabsItem>
         </Tabs>
-        <Div>
+        {/* <Div>
           <Title level="2" weight="medium">
             Призы победителям
           </Title>
-        </Div>
+        </Div> */}
 
         {rating !== null && rating !== "error" && (
           <div>
-            <Gallery
+            {/* <Gallery
               slideWidth="90%"
               align="center"
               className="rating__gallery"
@@ -196,6 +196,7 @@ class Home extends React.Component {
                   </div>
                 ))}
             </Gallery>
+             */}
             <Div>
               {!!rating[this.state.activeTab].user?.rating && (
                 <RatingCell user={rating[this.state.activeTab].user} />

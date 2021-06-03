@@ -29,7 +29,7 @@ export const tapticSelectNotification = () => {
 export const shareWallPost = (id) => {
   api.bridge.send("VKWebAppShowWallPostBox", {
     message:
-      "Спасай планету вместе с нами, соревнуйся с другими участниками и получай призы! \n \n Вступай в Экопоколение. \n Проект @ecodelai(Делай!) и @vebrf(ВЭБ.РФ)",
+      "Спасай планету вместе с нами. Сдай ЭкоГТО вместе с Экопоколением! \n Проект @ecodelai(Делай!)",
     attachments: `https://vk.com/app7744255#?referral=${id}`,
   });
 };

@@ -80,84 +80,84 @@ class App extends React.Component {
     if (location.getPopupId() === POPOUT_SPINNER) {
       return <ScreenSpinner />;
     }
-    if (location.getPopupId() === POPOUT_TEAM_JOIN_CONFIRM) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: "Отмена",
-              autoclose: true,
-              mode: "cancel",
-            },
-            {
-              title: "Отправить",
-              autoclose: true,
-              mode: "destructive",
-              action: () => this.joinTeam(),
-            },
-          ]}
-          actionsLayout="horizontal"
-          onClose={() => this.props.router.replacePopup(null)}
-          header="Заявка на вступление"
-          text="Отправить заявку на вступление в команду? Подтверждение может занять некоторое время."
-        />
-      );
-    }
+    // if (location.getPopupId() === POPOUT_TEAM_JOIN_CONFIRM) {
+    //   return (
+    //     <Alert
+    //       actions={[
+    //         {
+    //           title: "Отмена",
+    //           autoclose: true,
+    //           mode: "cancel",
+    //         },
+    //         {
+    //           title: "Отправить",
+    //           autoclose: true,
+    //           mode: "destructive",
+    //           action: () => this.joinTeam(),
+    //         },
+    //       ]}
+    //       actionsLayout="horizontal"
+    //       onClose={() => this.props.router.replacePopup(null)}
+    //       header="Заявка на вступление"
+    //       text="Отправить заявку на вступление в команду? Подтверждение может занять некоторое время."
+    //     />
+    //   );
+    // }
 
-    if (location.getPopupId() === POPOUT_TEAM_DOWNGRADE_CONFIRM) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: "Отмена",
-              autoclose: true,
-              mode: "cancel",
-            },
-            {
-              title: "Удалить",
-              autoclose: true,
-              mode: "destructive",
-              action: () =>
-                updateTeam({
-                  id: this.props.team.id,
-                  type: "delete",
-                }).then((res) => this.props.setTeam()),
-            },
-          ]}
-          actionsLayout="horizontal"
-          onClose={() => this.props.router.replacePopup(null)}
-          header="Удалить команду"
-          text="Вы уверены, что хотите удалить команду? Весь прогресс будет сброшен"
-        />
-      );
-    }
-    if (location.getPopupId() === POPOUT_TEAM_LEAVE_CONFIRM) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: "Отмена",
-              autoclose: true,
-              mode: "cancel",
-            },
-            {
-              title: "Выйти",
-              autoclose: true,
-              mode: "destructive",
-              action: () =>
-                leaveTeam({
-                  id: this.props.team.id,
-                  type: "exit",
-                }).then((res) => this.props.setTeam()),
-            },
-          ]}
-          actionsLayout="horizontal"
-          onClose={() => this.props.router.replacePopup(null)}
-          header="Выход из команды"
-          text="Вы уверены, что хотите выйти из команды?"
-        />
-      );
-    }
+    // if (location.getPopupId() === POPOUT_TEAM_DOWNGRADE_CONFIRM) {
+    //   return (
+    //     <Alert
+    //       actions={[
+    //         {
+    //           title: "Отмена",
+    //           autoclose: true,
+    //           mode: "cancel",
+    //         },
+    //         {
+    //           title: "Удалить",
+    //           autoclose: true,
+    //           mode: "destructive",
+    //           action: () =>
+    //             updateTeam({
+    //               id: this.props.team.id,
+    //               type: "delete",
+    //             }).then((res) => this.props.setTeam()),
+    //         },
+    //       ]}
+    //       actionsLayout="horizontal"
+    //       onClose={() => this.props.router.replacePopup(null)}
+    //       header="Удалить команду"
+    //       text="Вы уверены, что хотите удалить команду? Весь прогресс будет сброшен"
+    //     />
+    //   );
+    // }
+    // if (location.getPopupId() === POPOUT_TEAM_LEAVE_CONFIRM) {
+    //   return (
+    //     <Alert
+    //       actions={[
+    //         {
+    //           title: "Отмена",
+    //           autoclose: true,
+    //           mode: "cancel",
+    //         },
+    //         {
+    //           title: "Выйти",
+    //           autoclose: true,
+    //           mode: "destructive",
+    //           action: () =>
+    //             leaveTeam({
+    //               id: this.props.team.id,
+    //               type: "exit",
+    //             }).then((res) => this.props.setTeam()),
+    //         },
+    //       ]}
+    //       actionsLayout="horizontal"
+    //       onClose={() => this.props.router.replacePopup(null)}
+    //       header="Выход из команды"
+    //       text="Вы уверены, что хотите выйти из команды?"
+    //     />
+    //   );
+    // }
   }
 
   joinTeam() {
@@ -255,14 +255,14 @@ class App extends React.Component {
                       <Icon28UserCircleOutline />
                     </TabbarItem>
 
-                    <TabbarItem
+                    {/* <TabbarItem
                       onClick={() => router.replacePage(PAGE_TEAM)}
                       selected={VIEW_TEAM === location.getViewId()}
                       data-story={VIEW_TEAM}
                       text="Команда"
                     >
                       <Icon28Users3Outline />
-                    </TabbarItem>
+                    </TabbarItem> */}
 
                     <TabbarItem
                       onClick={() => router.replacePage(PAGE_RATING)}
@@ -290,13 +290,13 @@ class App extends React.Component {
                   modal={modal}
                   popout={popout}
                 />
-                <Team
+                {/* <Team
                   activePanel={location.getViewActivePanel(VIEW_TEAM)}
                   history={location.getViewHistory(VIEW_TEAM)}
                   id={VIEW_TEAM}
                   modal={modal}
                   popout={popout}
-                />
+                /> */}
                 <Rating
                   activePanel={location.getViewActivePanel(VIEW_RATING)}
                   history={location.getViewHistory(VIEW_RATING)}

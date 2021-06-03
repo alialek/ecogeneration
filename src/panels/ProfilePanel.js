@@ -95,7 +95,7 @@ class Home extends React.Component {
               <Card>
                 <Div className="d-row justify-space-between">
                   <div className="d-row">
-                    <Avatar size="80px" src={profile.photo_200}></Avatar>
+                    <Avatar size="65px" src={profile.photo_200}></Avatar>
                     <div className="ml-12">
                       <Title className="profile__name" level="2" weight="bold">
                         {profile.first_name} {profile.last_name}
@@ -103,12 +103,12 @@ class Home extends React.Component {
                       <Caption level="1">Баллов: {user.score}</Caption>
                     </div>
                   </div>
-                  <div
+                  {/* <div
                     className="mt-12 pointer"
                     onClick={this.openEditUserModal}
                   >
                     <Icon20GearOutline />
-                  </div>
+                  </div> */}
                 </Div>
               </Card>
             </Div>
