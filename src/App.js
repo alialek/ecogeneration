@@ -36,6 +36,9 @@ import {
   MODAL_EDIT_USER,
   POPOUT_TEAM_LEAVE_CONFIRM,
   POPOUT_TEAM_DOWNGRADE_CONFIRM,
+  VIEW_EVENT,
+  PAGE_EVENT,
+  MODAL_RATING,
 } from "./router";
 import { PAGE_PROFILE } from "./router/index";
 import "./App.css";
@@ -44,7 +47,7 @@ import { withParams, withRouter } from "@happysanta/router";
 import { getUserInfo, isIntroViewed } from "./api/vk/index";
 import AboutModalCard from "./modals/AboutModalCard";
 import News from "./views/NewsView";
-import Rating from "./views/RatingView";
+import Event from "./views/EventView";
 import {
   Icon20CancelCircleFillRed,
   Icon20CheckCircleFillGreen,
@@ -71,8 +74,9 @@ import CreateTeamModalCard from "./modals/CreateTeamModalCard";
 import ManageTeamModalCard from "./modals/ManageTeamModal";
 import { leaveTeam, updateTeam, updateTeamMembers } from "./api/rest/team";
 import showSnackbar from "./helpers/generateSnackbar";
-import TeamViewerModal from "./modals/TeamViewerModal";
+import TeamViewerModal from "./modals/RatingModalPage";
 import EditUserModal from "./modals/EditUserModal";
+import RatingModalPage from "./modals/RatingModalPage";
 
 class App extends React.Component {
   popout() {
@@ -234,6 +238,7 @@ class App extends React.Component {
         <ManageTeamModalCard id={MODAL_MANAGE_TEAM} />
         <TeamViewerModal id={MODAL_VIEW_TEAM} />
         <EditUserModal id={MODAL_EDIT_USER} />
+        <RatingModalPage id={MODAL_RATING} />
       </ModalRoot>
     );
     return (
@@ -265,10 +270,10 @@ class App extends React.Component {
                     </TabbarItem> */}
 
                     <TabbarItem
-                      onClick={() => router.replacePage(PAGE_RATING)}
-                      selected={VIEW_RATING === location.getViewId()}
-                      data-story={VIEW_RATING}
-                      text="Рейтинг"
+                      onClick={() => router.replacePage(PAGE_EVENT)}
+                      selected={VIEW_EVENT === location.getViewId()}
+                      data-story={VIEW_EVENT}
+                      text="Новый сезон"
                     >
                       <Icon28ServicesOutline />
                     </TabbarItem>
@@ -290,6 +295,7 @@ class App extends React.Component {
                   modal={modal}
                   popout={popout}
                 />
+
                 {/* <Team
                   activePanel={location.getViewActivePanel(VIEW_TEAM)}
                   history={location.getViewHistory(VIEW_TEAM)}
@@ -297,10 +303,10 @@ class App extends React.Component {
                   modal={modal}
                   popout={popout}
                 /> */}
-                <Rating
-                  activePanel={location.getViewActivePanel(VIEW_RATING)}
-                  history={location.getViewHistory(VIEW_RATING)}
-                  id={VIEW_RATING}
+                <Event
+                  activePanel={location.getViewActivePanel(VIEW_EVENT)}
+                  history={location.getViewHistory(VIEW_EVENT)}
+                  id={VIEW_EVENT}
                   modal={modal}
                   popout={popout}
                 />

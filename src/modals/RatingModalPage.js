@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import {
   ANDROID,
   Avatar,
+  Div,
   Footer,
   IOS,
   ModalPage,
@@ -13,6 +14,8 @@ import {
   PanelSpinner,
   platform,
   RichCell,
+  Separator,
+  Title,
   VKCOM,
   withModalRootContext,
 } from "@vkontakte/vkui";
@@ -20,25 +23,15 @@ import { Icon24Cancel } from "@vkontakte/icons";
 import { setSnackbar, setTasks } from "../store/data/actions";
 import { getTeamById } from "../api/rest/team";
 import "./modal.css";
+import RatingCell from "./../components/RatingCell";
 
-const AboutCard = ({ id, activeTeam, updateModalHeight }) => {
+const RatingModalPage = ({ id, rating, updateModalHeight }) => {
   const router = useRouter();
-
-  const [team, setTeam] = useState(null);
-
-  useLayoutEffect(() => {
-    getTeamById({ id: activeTeam })
-      .then((res) => {
-        setTeam(res.data);
-      })
-      .catch(() => setTeam("error"));
-
-    return setTeam(null);
-  }, [activeTeam, setTeam]);
+  const [activeTypeTab, setActiveTypeTab] = useState("users");
 
   useEffect(() => {
     updateModalHeight();
-  }, [team]);
+  }, []);
 
   const closeModal = () => {
     router.replaceModal(null);
@@ -66,35 +59,26 @@ const AboutCard = ({ id, activeTeam, updateModalHeight }) => {
             )
           }
         >
-          Команда {team?.title}
+          Рейтинг
         </ModalPageHeader>
       }
     >
       <div className="full-height">
-        {team === null && <PanelSpinner />}
-        {team?.title && (
-          <>
-            {team.admins.map((item, i) => (
-              <RichCell
-                key={i}
-                disabled
-                before={<Avatar src={item.photo_200} />}
-              >
-                {`${item.first_name} ${item.last_name}`}
-              </RichCell>
-            ))}
-            {team.users.map((item, i) => (
-              <RichCell
-                key={i}
-                disabled
-                before={<Avatar src={item.photo_200} />}
-              >
-                {`${item.first_name} ${item.last_name}`}
-              </RichCell>
-            ))}
-            <Footer>{team.admins.length + team.users.length} чел. из 10</Footer>
-          </>
-        )}
+        <Div>
+          <Title level={2}>Моя позиция</Title>
+          {!!rating[activeTypeTab].user?.rating && (
+            <RatingCell user={rating[activeTypeTab].user} />
+          )}
+        </Div>
+        {!!rating[activeTypeTab].user?.rating && <Separator />}
+        <Div>
+          <Title level={2}>Общий рейтинг</Title>
+          {rating[activeTypeTab].all.map((user, i) => (
+            <div key={i}>
+              <RatingCell user={user} />
+            </div>
+          ))}
+        </Div>
       </div>
     </ModalPage>
   );
@@ -102,7 +86,7 @@ const AboutCard = ({ id, activeTeam, updateModalHeight }) => {
 
 const mapStateToProps = (state) => {
   return {
-    activeTeam: state.data.activeTeam,
+    rating: state.data.rating,
   };
 };
 
@@ -116,4 +100,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withModalRootContext(AboutCard));
+)(withModalRootContext(RatingModalPage));

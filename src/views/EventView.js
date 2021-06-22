@@ -1,10 +1,10 @@
-import RatingPanel from "../panels/RatingPanel";
+import EventPanel from "../panels/EventPanel";
 
 import React, { Component } from "react";
 import { View } from "@vkontakte/vkui";
-import { PANEL_RATING } from "../router";
+import { PANEL_EVENT } from "../router";
 
-class Raiting extends Component {
+class Event extends Component {
   render() {
     return (
       <View
@@ -13,10 +13,10 @@ class Raiting extends Component {
         modal={this.props.modal}
         activePanel={this.props.activePanel}
       >
-        <RatingPanel id={PANEL_RATING} />
+        <EventPanel id={PANEL_EVENT} />
       </View>
     );
   }
 }
 
-export default Raiting;
+export default Event;

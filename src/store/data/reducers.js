@@ -14,6 +14,16 @@ import {
   SET_ACTIVE_TEAM,
 } from "./actionTypes";
 
+const sortByGroup = (data) => {
+  const container = {};
+  data.map((task) => {
+    container[task.group]
+      ? container[task.group].push(task)
+      : (container[task.group] = [task]);
+  });
+
+  return container;
+};
 const initialState = {
   colorScheme: "client_light",
   news: null,
@@ -115,22 +125,13 @@ export const dataReducer = (state = initialState, action) => {
       };
     }
     case SET_TASKS: {
-      const personalGroups = {};
-      const teamGroups = {};
-      action.payload.data.all.personal.map((task) =>
-        personalGroups[task.group]
-          ? personalGroups[task.group].push(task)
-          : (personalGroups[task.group] = [task]),
-      );
+      const personalGroups = sortByGroup(action.payload.data.personal.new);
+      const ecogames = sortByGroup(action.payload.data.ecogames.new);
+      const teamGroups = sortByGroup(action.payload.data.team.new);
 
-      action.payload.data.all.team.map((task) =>
-        teamGroups[task.group]
-          ? teamGroups[task.group].push(task)
-          : (teamGroups[task.group] = [task]),
-      );
-      action.payload.data.all.personal = personalGroups;
-      action.payload.data.all.team = teamGroups;
-      console.log(action.payload.data);
+      action.payload.data.ecogames.new = ecogames;
+      action.payload.data.personal.new = personalGroups;
+      action.payload.data.team.new = teamGroups;
       return {
         ...state,
         tasks: action.payload.data,

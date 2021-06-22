@@ -4,19 +4,23 @@ export const PAGE_PROFILE = "/";
 export const PAGE_RATING = "/rating";
 export const PAGE_NEWS = "/news";
 export const PAGE_TEAM = "/team";
+export const PAGE_EVENT = "/event";
 
 export const PANEL_PROFILE = "panel_profile";
 export const PANEL_RATING = "panel_rating";
 export const PANEL_NEWS = "panel_news";
 export const PANEL_TEAM = "panel_team";
+export const PANEL_EVENT = "panel_event";
 
 export const VIEW_PROFILE = "view_main";
 export const VIEW_RATING = "view_rating";
 export const VIEW_NEWS = "view_news";
 export const VIEW_TEAM = "view_team";
+export const VIEW_EVENT = "view_event";
 
 export const MODAL_ABOUT = "modal_about";
 export const MODAL_INFO = "modal_INFO";
+export const MODAL_RATING = "modal_RATING";
 export const MODAL_TEST = "modal_TEST";
 export const MODAL_CREATE_TEAM = "modal_CREATE_TEAM";
 export const MODAL_MANAGE_TEAM = "modal_MANAGE_TEAM";
@@ -35,6 +39,7 @@ const routes = {
   [PAGE_RATING]: new Page(PANEL_RATING, VIEW_RATING),
   [PAGE_NEWS]: new Page(PANEL_NEWS, VIEW_NEWS),
   [PAGE_TEAM]: new Page(PANEL_TEAM, VIEW_TEAM),
+  [PAGE_EVENT]: new Page(PANEL_EVENT, VIEW_EVENT),
 };
 
 export const router = new Router(routes);

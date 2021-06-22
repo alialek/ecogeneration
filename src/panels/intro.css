@@ -13,8 +13,8 @@
 }
 
 .slide__image {
-  width: 60%;
-  max-width: 130px;
+  width: 90%;
+  max-width: 180px;
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;

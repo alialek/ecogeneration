@@ -42,18 +42,24 @@ class Home extends React.Component {
 
     this.getClickAction = this.getClickAction.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.getAmountOfDays = this.getAmountOfDays.bind(this);
     this.openEditUserModal = this.openEditUserModal.bind(this);
   }
 
   getAmountOfDeclined() {
-    return this.props.tasks.user.personal.reduce(
+    return this.props.tasks.ecogames.done.reduce(
       (acc, val) => (val.status === "decline" ? acc + 1 : acc),
       0,
     );
   }
 
+  getAmountOfDays(date) {
+    let date1 = new Date();
+    let date2 = new Date(date * 1000);
+    return parseInt((date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+  }
+
   getClickAction(task) {
-    console.log(task.block);
     if (task.block) return () => {};
 
     return task.typeTask === "test"
@@ -100,7 +106,10 @@ class Home extends React.Component {
                       <Title className="profile__name" level="2" weight="bold">
                         {profile.first_name} {profile.last_name}
                       </Title>
-                      <Caption level="1">Баллов: {user.score}</Caption>
+                      <Caption level="1">
+                        Дней в ЭкоПоколении:{" "}
+                        {this.getAmountOfDays(user.reg_time)}
+                      </Caption>
                     </div>
                   </div>
                   {/* <div
@@ -162,14 +171,14 @@ class Home extends React.Component {
             {this.state.activeTab === "new" && (
               <FormLayout>
                 {this.state.activeTab === "new" &&
-                Object.keys(tasks.all.personal).length ? (
-                  Object.keys(tasks.all.personal).map((title, n) => (
+                Object.keys(tasks.ecogames.new).length ? (
+                  Object.keys(tasks.ecogames.new).map((title, n) => (
                     <FormItem key={n} top={title}>
-                      {tasks.all.personal[title].map((task, i) => (
+                      {tasks.ecogames.new[title].map((task, i) => (
                         <div key={i} onClick={() => this.getClickAction(task)}>
                           <TaskCard task={task} type={this.state.activeTab} />
                         </div>
-                      ))}{" "}
+                      ))}
                     </FormItem>
                   ))
                 ) : (
@@ -189,8 +198,8 @@ class Home extends React.Component {
               </FormLayout>
             )}
             {this.state.activeTab === "done" &&
-              (tasks.user.personal.length ? (
-                tasks.user.personal.map((task, n) => (
+              (tasks.ecogames.done.length ? (
+                tasks.ecogames.done.map((task, n) => (
                   <div key={n} onClick={() => this.getClickAction(task)}>
                     <TaskCard task={task} type={this.state.activeTab} />
                   </div>

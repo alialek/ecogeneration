@@ -27,6 +27,10 @@ import { reg } from "./../api/rest/reg";
 import { getTasks } from "./../api/rest/tasks";
 import { Icon20CancelCircleFillRed } from "@vkontakte/icons";
 import showSnackbar from "./../helpers/generateSnackbar";
+import econational from "../img/eco - national project.png";
+import gtoeko from "../img/GTOEKO.png";
+import delayLogo from "../img/logo_2.png";
+import rosprirodnadzor from "../img/rosprirnadzor.png";
 
 class Intro extends React.Component {
   constructor(props) {
@@ -34,51 +38,65 @@ class Intro extends React.Component {
     this.state = {
       slideIndex: 0,
       categories: [
-        { id: 0, title: "Младшая", description: "Ученики 1-5 классов" },
+        { id: 0, title: "Младшая", description: "Младшая школа (7-11 лет)" },
         {
           id: 1,
           title: "Средняя",
-          description: "Ученики 6-11 классов и студенты ССУЗ",
+          description: "Средняя и старшая школа (12 - 16 лет)",
         },
         {
           id: 2,
           title: "Старшая",
-          description: "Студенты ВУЗов",
+          description: "Молодёжь (17 +)",
         },
       ],
       chosenCategory: null,
       slides: [
         {
-          title: "Что такое «Экопоколение»‎ и для чего это приложение?",
+          title: "Хеллоу!",
           description:
-            "Привет! На протяжении следующего месяца тебе предстоит научиться азам ответственного потребления, узнать об интересных экопривычках, а также закрепить полученные навыки и выполнить ряд заданий.",
+            'Сегодня мы запускаем новый сезон совместно с международной детско-юношеской премией "Экология - дело каждого" от Росприроднадзора. ',
           icon: earth,
           button: "Далее",
         },
         {
-          title: "Какие задания есть?",
-          description:
-            "Обо всем узнаешь уже на практике! Приступай к заданиям и не бойся трудностей, а также не забудь посетить образовательный вебинар, где будет рассказана теоретическая часть, которую тебе предстоит применить на практике!",
-          icon: notebook,
+          title:
+            "Для того чтобы принять участие в 3 сезоне, тебе необходимо выбрать свою возрастную категорию.",
+
           button: "Далее",
         },
         {
-          title: "Формат участия",
+          title: "Младшая и средняя школа",
           description:
-            "В новом сезоне «Экопоколения»‎ ты можешь участвовать индивидуально или в команде от 2 до 10 человек.",
+            'Для младшей и средней школы  (от 7 до 16) необходимо выполнить задания "Экопоколения", которые соответствуют номинациям премии "Экология - дело каждого"',
+          icon: rosprirodnadzor,
+          button: "Далее",
+        },
+        {
+          title: "Старшие участники",
+          description:
+            'Для молодёжной возрастной группы (17+) - пройти эстафету #экоГТО на тему национального проекта "Экология" (17 +)',
+          icon: econational,
+          button: "Далее",
+        },
+        {
+          title: "Обрати внимание",
+          description:
+            "Для младшей и средней возрастных категорий в этом сезоне решением задания является участие в номинациях Премии, а в общем зачёте побеждает тот, кто выполнил больше заданий",
           icon: medal,
           button: "Далее",
         },
         {
-          title: "Немного о нас",
+          title: "Желаем удачи",
           description:
-            "Проект «Экопоколение 2.0»‎ реализуется Всероссийской общественной организацией волонтеров-экологов «Делай!»‎ и Государственной корпорацией развития ВЭБ.РФ – вместе мы стремимся воспитать новое экопоколение.",
-          icon: hugging,
+            'По желанию, младшие участники также могут сдать #экоГТО. Задания подготовлены при поддержке движения "Друзья Заповедных Островов" и "Федеральным детским эколого-биологическим центром"',
+          icon: gtoeko,
           button: "Далее",
         },
         {
-          title: "Выбери категорию участия",
-
+          title: 'Становись волонтёром-экологом вместе с "Делай!"',
+          description: "",
+          icon: delayLogo,
           button: "Продолжить",
         },
       ],
@@ -130,6 +148,7 @@ class Intro extends React.Component {
           slideIndex={this.state.slideIndex}
           slideWidth="100%"
           align="right"
+          isDraggable={false}
           className="intro__gallery"
         >
           {this.state.slides.map((slide, i) => (
@@ -152,7 +171,7 @@ class Intro extends React.Component {
                     />
                   </div>
                 )}
-                {this.state.slideIndex === 4 &&
+                {this.state.slideIndex === 1 &&
                   this.state.categories.map((category) => (
                     <>
                       <SimpleCell
@@ -186,16 +205,13 @@ class Intro extends React.Component {
               <Div className="slide__button-holder">
                 <Button
                   disabled={
-                    this.state.slideIndex === 4 &&
+                    this.state.slideIndex === 1 &&
                     this.state.chosenCategory === null
                       ? true
                       : false
                   }
                   onClick={() => {
-                    if (
-                      slide.button === "Сохранить" ||
-                      slide.button === "Далее"
-                    )
+                    if (slide.button === "Далее")
                       this.changeIndex(this.state.slideIndex + 1);
 
                     if (slide.button === "Продолжить") this.registerUser();
